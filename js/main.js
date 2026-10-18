@@ -21,6 +21,9 @@ function gameStart() {
     addPlayer();
     addEnemy();
 
+
+    //TIME CHANGES
+
     mainIntervalId = setInterval(gameLoop, 1000 / 60);
     enemyIntervalId = setInterval(addEnemy, 1200);
 }

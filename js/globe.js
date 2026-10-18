@@ -8,6 +8,8 @@ class Gate {
     ];
   }
 
+
+
   createBar(x, width, thickness) {
     const node = document.createElement("div");
     node.className = "enemy";
