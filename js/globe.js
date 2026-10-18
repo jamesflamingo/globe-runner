@@ -1,29 +1,33 @@
 class Gate {
-  constructor(gapX, gapWidth, thickness = 24) {
+  constructor(gapX, gapWidth) {
     this.y = 0;
     this.speed = 3;
+    const thickness = 80;
+    const overhang = 20;
     this.bars = [
-      this.createBar(0, gapX, thickness),
-      this.createBar(gapX + gapWidth, gameBoxNode.clientWidth - gapX - gapWidth, thickness)
+      this.createBar(-overhang, gapX + overhang, thickness),
+      this.createBar(gapX + gapWidth, gameBoxNode.clientWidth - gapX - gapWidth + overhang, thickness)
     ];
   }
 
 
 
-  createBar(x, width, thickness) {
+  createBar(x, length, thickness) {
     const node = document.createElement("div");
     node.className = "enemy";
-    node.style.width = `${width}px`;
+    node.style.width = `${length}px`;
     node.style.height = `${thickness}px`;
     node.style.boxSizing = "border-box";
-    node.style.backgroundColor = "red";
-    node.style.border = "solid white 2px";
+    node.style.backgroundImage = 'url("./images/82b04f89-6b33-4713-b68e-7266b21b8d88.png")';
+    node.style.backgroundSize = "100% 100%";
+    node.style.backgroundPosition = "center";
+    node.style.backgroundRepeat = "no-repeat";
     node.style.position = "absolute";
     node.style.top = `${this.y}px`;
     node.style.left = `${x}px`;
     gameBoxNode.append(node);
 
-    return { node, x, width, height: thickness, y: this.y };
+    return { node, x, width: length, height: thickness, y: this.y };
   }
 
   automaticMovement() {

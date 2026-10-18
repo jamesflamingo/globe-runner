@@ -40,13 +40,19 @@ function addPlayer() {
 
 function addEnemy() {
     const gameWidth = gameBoxNode.clientWidth;
-    const minBarrierWidth = 20;
-    const maxGapWidth = gameWidth - minBarrierWidth * 2;
-    const gapWidth = Math.min(Math.floor(Math.random() * 41) + 90, maxGapWidth);
-    const maxGapX = gameWidth - minBarrierWidth - gapWidth;
-    const gapX = minBarrierWidth + Math.floor(Math.random() * (maxGapX - minBarrierWidth + 1));
+    const gapWidth = 50;
+    const minBarrierLength = 30;
+    const availableBarrierWidth = gameWidth - gapWidth;
+    const maxShortBarrierLength = Math.floor(availableBarrierWidth / 2) - 10;
+    const shortBarrierLength = minBarrierLength + Math.floor(
+        Math.random() * (maxShortBarrierLength - minBarrierLength + 1)
+    );
+    const longBarrierLength = availableBarrierWidth - shortBarrierLength;
+    const leftBarrierLength = Math.random() < 0.5
+        ? shortBarrierLength
+        : longBarrierLength;
 
-    enemiesArr.push(new Gate(gapX, gapWidth));
+    enemiesArr.push(new Gate(leftBarrierLength, gapWidth));
 }
 
 function checkEnemyDespawn() {

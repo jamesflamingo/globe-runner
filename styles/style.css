@@ -29,6 +29,15 @@ button:hover {
   padding: 20px;
 }
 
+#game-viewport {
+  width: 300px;
+  height: 600px;
+  display: flex;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: 16px;
+}
+
 #game-box {
   background-color: #0f172a;
   background-image: url("../images/ad6ee39d-e5c1-409c-afa3-bc9f827953f6.png");
@@ -39,7 +48,7 @@ button:hover {
   height: 600px;
 
   position: relative; /* allows us to position inner elements (absolute) related the the game-box */
-  overflow: hidden; /* prevents elements to visually exit the game-box */
+  overflow: hidden;
   user-select: none; /* prevents elements inside the game-box to be highlighted. This improves the user experience for click events on the game-box */
   
   border: 50% solid #f8fafc;

@@ -10,8 +10,8 @@ class Player {
   
   //GLOBE
 
-this.width = 30;
-this.height = 30;
+this.width = 20;
+this.height = 20;
 this.x = 70;
 this.y = gameBoxNode.clientHeight - this.height  -150 ; 
  
