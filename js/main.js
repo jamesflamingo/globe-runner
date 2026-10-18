@@ -25,7 +25,7 @@ function gameStart() {
     //TIME CHANGES
 
     mainIntervalId = setInterval(gameLoop, 1000 / 60);
-    enemyIntervalId = setInterval(addEnemy, 1200);
+    enemyIntervalId = setInterval(addEnemy, 1870);
 }
 
 function gameLoop() {
@@ -40,9 +40,10 @@ function addPlayer() {
 
 function addEnemy() {
     const gameWidth = gameBoxNode.clientWidth;
-    const gapWidth = 50;
+    const edgeMargin = 80;
+    const gapWidth = 70;
     const minBarrierLength = 30;
-    const availableBarrierWidth = gameWidth - gapWidth;
+    const availableBarrierWidth = gameWidth - edgeMargin * 2 - gapWidth;
     const maxShortBarrierLength = Math.floor(availableBarrierWidth / 2) - 10;
     const shortBarrierLength = minBarrierLength + Math.floor(
         Math.random() * (maxShortBarrierLength - minBarrierLength + 1)
@@ -51,8 +52,9 @@ function addEnemy() {
     const leftBarrierLength = Math.random() < 0.5
         ? shortBarrierLength
         : longBarrierLength;
+    const gapX = edgeMargin + leftBarrierLength;
 
-    enemiesArr.push(new Gate(leftBarrierLength, gapWidth));
+    enemiesArr.push(new Gate(gapX, gapWidth, edgeMargin));
 }
 
 function checkEnemyDespawn() {
@@ -76,7 +78,15 @@ function checkCollision(element1, element2) {
 }
 
 function checkCollisionPlayerEnemy() {
-    if (enemiesArr.some((gate) => gate.bars.some((bar) => checkCollision(playerObj, bar)))) {
+    const playerHitboxInset = 4;
+    const playerHitbox = {
+        x: playerObj.x + playerHitboxInset,
+        y: playerObj.y + playerHitboxInset,
+        width: playerObj.width - playerHitboxInset * 2,
+        height: playerObj.height - playerHitboxInset * 2
+    };
+
+    if (enemiesArr.some((gate) => gate.bars.some((bar) => checkCollision(playerHitbox, bar)))) {
         gameOver();
     }
 }

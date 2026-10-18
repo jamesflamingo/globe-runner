@@ -31,7 +31,7 @@ this.y = gameBoxNode.clientHeight - this.height  -150 ;
   this.node.style.top = `${this.y}px`
   this.node.style.left = `${this.x}px`
   
-this.speed = 20
+this.speed = 25
 
 
 

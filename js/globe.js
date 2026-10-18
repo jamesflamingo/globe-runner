@@ -1,12 +1,15 @@
 class Gate {
-  constructor(gapX, gapWidth) {
+  constructor(gapX, gapWidth, edgeMargin) {
     this.y = 0;
-    this.speed = 3;
+    this.speed = 2;
     const thickness = 80;
-    const overhang = 20;
     this.bars = [
-      this.createBar(-overhang, gapX + overhang, thickness),
-      this.createBar(gapX + gapWidth, gameBoxNode.clientWidth - gapX - gapWidth + overhang, thickness)
+      this.createBar(edgeMargin, gapX - edgeMargin, thickness),
+      this.createBar(
+        gapX + gapWidth,
+        gameBoxNode.clientWidth - edgeMargin - gapX - gapWidth,
+        thickness
+      )
     ];
   }
 

@@ -18,9 +18,9 @@ A browser game where you move the yellow globe left and right through gaps in pa
 
 ### `js/`
 
-- `main.js` — starts the game, runs the game loop, spawns side barriers with randomly different horizontal lengths around a fixed 50-pixel gap; the vertical thickness stays fixed at 80 pixels.
-- `player.js` — creates the yellow, round player near the bottom of the game area and moves it left or right while keeping it inside the play area.
-- `globe.js` — defines the falling gate obstacles, with fixed-thickness red rectangular bars attached to both sides of the game area.
+- `main.js` — starts the game, runs the game loop, spawns side barriers every 1.87 seconds with randomly different horizontal lengths, a fixed 70-pixel gap, and 45-pixel margins aligned with the background buildings; the vertical thickness stays fixed at 80 pixels.
+- `player.js` — creates the yellow, round player near the bottom of the game area and moves it left or right while keeping it inside the play area; collision detection uses a smaller hitbox so the globe can get closer to barriers.
+- `globe.js` — defines the falling gate obstacles, with fixed-thickness bars attached to both sides of the game area that fall at 2 pixels per frame.
 
 ### `styles/`
 
@@ -28,7 +28,7 @@ A browser game where you move the yellow globe left and right through gaps in pa
 
 ### `images/`
 
-- `ad6ee39d-e5c1-409c-afa3-bc9f827953f6.png` — background image for the game area.
+- `a90ddd84-0e38-411e-9099-48d6feb5a997.png` — background image for the game area.
 - `d755df37-1681-4665-9cb1-e67a6ab3f00e.png` — player globe image.
 
 ## Technologies
