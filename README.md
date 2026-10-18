@@ -24,11 +24,12 @@ A browser game where you move the yellow globe left and right through gaps in pa
 
 ### `styles/`
 
-- `style.css` — styles the page, buttons, screens, and portrait game area (300 by 600 pixels).
+- `style.css` — styles the page, buttons, screens, and portrait game area (300 by 600 pixels), including its background image.
 
 ### `images/`
 
-- No image files are currently used by the game.
+- `ad6ee39d-e5c1-409c-afa3-bc9f827953f6.png` — background image for the game area.
+- `d755df37-1681-4665-9cb1-e67a6ab3f00e.png` — player globe image.
 
 ## Technologies
 
