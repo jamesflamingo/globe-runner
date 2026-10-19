@@ -6,6 +6,7 @@ const startBtnNode = document.querySelector("#start-btn");
 const restartBtnNode = document.querySelector("#restart-btn");
 const gameBoxNode = document.querySelector("#game-box");
 const GAME_EDGE_MARGIN = 80;
+const GAME_FLOOR_HEIGHT_RATIO = 0.82;
 
 //* GLOBAL GAME VARIABLES
 let playerObj = null;
@@ -101,7 +102,13 @@ function checkCollisionPlayerEnemy() {
         height: playerObj.height - playerHitboxInset * 2
     };
 
-    if (enemiesArr.some((gate) => gate.bars.some((bar) => checkCollision(playerHitbox, bar)))) {
+    const hitEnemy = enemiesArr.some((gate) =>
+        gate.bars.some((bar) => checkCollision(playerHitbox, bar))
+    );
+    const floorY = gameBoxNode.clientHeight * GAME_FLOOR_HEIGHT_RATIO;
+    const hitFloor = playerObj.y + playerObj.height >= floorY;
+
+    if (hitEnemy || hitFloor) {
         gameOver();
     }
 }
