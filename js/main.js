@@ -8,8 +8,10 @@ const gameBoxNode = document.querySelector("#game-box");
 const scoreNode = document.querySelector("#score");
 const finalScoreNode = document.querySelector("#final-score");
 const GAME_BACKGROUND_WIDTH = 971;
-const GAME_BACKGROUND_HEIGHT = 1620;
+const GAME_BACKGROUND_HEIGHT = 1619;
 const GAME_BUILDING_EDGE_X = 200;
+const GAME_IMAGE_WIDTH_RATIO = 0.8;
+const GAME_IMAGE_WIDTH_OFFSET = 32;
 const GAME_REFERENCE_WIDTH = 390;
 const GAME_FLOOR_HEIGHT_RATIO = 0.82;
 let gameStartedAt = 0;
@@ -84,12 +86,14 @@ function addEnemy() {
 }
 
 function getGameEdgeMargin() {
-    const scale = Math.max(
-        gameBoxNode.clientWidth / GAME_BACKGROUND_WIDTH,
-        gameBoxNode.clientHeight / GAME_BACKGROUND_HEIGHT
+    const imageWidth = Math.max(
+        0,
+        gameBoxNode.clientWidth * GAME_IMAGE_WIDTH_RATIO - GAME_IMAGE_WIDTH_OFFSET
     );
-    const backgroundOffsetX = (gameBoxNode.clientWidth - GAME_BACKGROUND_WIDTH * scale) / 2;
-    return Math.max(0, backgroundOffsetX + GAME_BUILDING_EDGE_X * scale);
+    const imageOffsetX = (gameBoxNode.clientWidth - imageWidth) / 2;
+    const buildingEdge = GAME_BUILDING_EDGE_X / GAME_BACKGROUND_WIDTH * imageWidth;
+
+    return imageOffsetX + buildingEdge;
 }
 
 function getGameGapWidth() {

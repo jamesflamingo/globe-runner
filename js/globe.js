@@ -5,7 +5,7 @@ class Gate {
     this.gapPositionRatio =
       (gapX - edgeMargin) /
       (gameBoxNode.clientWidth - edgeMargin * 2 - gapWidth);
-    const thickness = 54;
+    const thickness = 72;
     this.bars = [
       this.createBar(edgeMargin, gapX - edgeMargin, thickness),
       this.createBar(
