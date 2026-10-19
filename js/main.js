@@ -98,7 +98,7 @@ function getGameEdgeMargin() {
 }
 
 function getGameGapWidth() {
-    return Math.max(55, Math.min(gameBoxNode.clientWidth * 0.14, 140));
+    return Math.max(45, Math.min(gameBoxNode.clientWidth * 0.12, 120)) * 0.88;
 }
 
 function checkEnemyDespawn() {
