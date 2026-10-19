@@ -4,12 +4,15 @@ const gameScreenNode = document.querySelector("#game-screen");
 const gameOverScreenNode = document.querySelector("#game-over-screen");
 const startBtnNode = document.querySelector("#start-btn");
 const gameBoxNode = document.querySelector("#game-box");
+const GAME_EDGE_MARGIN = 80;
 
 //* GLOBAL GAME VARIABLES
 let playerObj = null;
 let enemiesArr = [];
 let mainIntervalId = null;
 let enemyIntervalId = null;
+const pressedKeys = new Set();
+let previousFrameTime = 0;
 
 //* GLOBAL GAME FUNCTIONS
 function gameStart() {
@@ -21,14 +24,26 @@ function gameStart() {
     addPlayer();
     addEnemy();
 
+    pressedKeys.clear();
+    previousFrameTime = performance.now();
 
     //TIME CHANGES
 
     mainIntervalId = setInterval(gameLoop, 1000 / 60);
-    enemyIntervalId = setInterval(addEnemy, 1870);
+    enemyIntervalId = setInterval(addEnemy, 1500);
 }
 
 function gameLoop() {
+    const currentTime = performance.now();
+    const deltaTime = Math.min((currentTime - previousFrameTime) / 1000, 0.05);
+    previousFrameTime = currentTime;
+    const movementDirection =
+        Number(pressedKeys.has("ArrowRight")) - Number(pressedKeys.has("ArrowLeft"));
+
+    if (movementDirection !== 0) {
+        playerObj.move(movementDirection, deltaTime);
+    }
+
     enemiesArr.forEach((enemy) => enemy.automaticMovement());
     checkEnemyDespawn();
     checkCollisionPlayerEnemy();
@@ -40,8 +55,8 @@ function addPlayer() {
 
 function addEnemy() {
     const gameWidth = gameBoxNode.clientWidth;
-    const edgeMargin = 80;
-    const gapWidth = 70;
+    const edgeMargin = GAME_EDGE_MARGIN;
+    const gapWidth = 55;
     const minBarrierLength = 30;
     const availableBarrierWidth = gameWidth - edgeMargin * 2 - gapWidth;
     const maxShortBarrierLength = Math.floor(availableBarrierWidth / 2) - 10;
@@ -96,6 +111,7 @@ function gameOver() {
     clearInterval(enemyIntervalId);
     mainIntervalId = null;
     enemyIntervalId = null;
+    pressedKeys.clear();
     playerObj = null;
     gameScreenNode.style.display = "none";
     gameOverScreenNode.style.display = "flex";
@@ -107,11 +123,16 @@ startBtnNode.addEventListener("click", gameStart);
 window.addEventListener("keydown", (event) => {
     if (!playerObj) return;
 
-    if (event.code === "ArrowLeft") {
+    if (event.code === "ArrowLeft" || event.code === "ArrowRight") {
         event.preventDefault();
-        playerObj.moveLeft();
-    } else if (event.code === "ArrowRight") {
-        event.preventDefault();
-        playerObj.moveRight();
+        pressedKeys.add(event.code);
     }
+});
+
+window.addEventListener("keyup", (event) => {
+    pressedKeys.delete(event.code);
+});
+
+window.addEventListener("blur", () => {
+    pressedKeys.clear();
 });

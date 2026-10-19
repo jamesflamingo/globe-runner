@@ -2,7 +2,7 @@ class Gate {
   constructor(gapX, gapWidth, edgeMargin) {
     this.y = 0;
     this.speed = 2;
-    const thickness = 80;
+    const thickness = 45;
     this.bars = [
       this.createBar(edgeMargin, gapX - edgeMargin, thickness),
       this.createBar(
@@ -21,7 +21,7 @@ class Gate {
     node.style.width = `${length}px`;
     node.style.height = `${thickness}px`;
     node.style.boxSizing = "border-box";
-    node.style.backgroundImage = 'url("./images/82b04f89-6b33-4713-b68e-7266b21b8d88.png")';
+    node.style.backgroundImage = 'url("./images/d95b4835-ff21-4dd0-937c-daabd1607189.png")';
     node.style.backgroundSize = "100% 100%";
     node.style.backgroundPosition = "center";
     node.style.backgroundRepeat = "no-repeat";
