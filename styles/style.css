@@ -10,8 +10,8 @@ body {
 }
 
 button {
-  background-color: #38bdf8;
-  color: white;
+  background-color: #38bff800;
+  color: rgb(60, 255, 6);
   padding: 14px 24px;
   font-size: 18px;
   margin-top: 16px;
@@ -22,7 +22,7 @@ button {
 }
 
 button:hover {
-  background-color: #f48c1d;
+  background-color: #0d7531;
 }
 
 .container {
@@ -53,6 +53,50 @@ button:hover {
   transform: translate(-50%, -50%);
   object-fit: fill;
   object-position: center;
+}
+
+#start-btn {
+  position: absolute;
+  top: 72.5%;
+  left: 50%;
+  width: calc(31.2vw - 12px);
+  height: 6.4%;
+  box-sizing: border-box;
+  padding: 0 4px;
+  font-family: "Courier New", monospace;
+  font-size: clamp(14px, 2.6vw, 28px);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: #00ff66;
+  border: 2px solid #00ff66;
+  border-radius: 2px;
+  margin-top: 0;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+}
+
+#options-btn {
+  position: absolute;
+  top: 72.5%;
+  left: calc(22% + 25px);
+  width: 13vw;
+  box-sizing: border-box;
+  padding: 4px;
+  font-family: "Courier New", monospace;
+  font-size: clamp(19px, calc(1.2vw + 10px), 24px);
+  font-weight: 700;
+  color: #00ff66;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  margin-top: 0;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+}
+
+#options-btn:hover {
+  background-color: #0d7531;
 }
 
 #game-viewport {
