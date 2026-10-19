@@ -3,6 +3,7 @@ const startScreenNode = document.querySelector("#start-screen");
 const gameScreenNode = document.querySelector("#game-screen");
 const gameOverScreenNode = document.querySelector("#game-over-screen");
 const startBtnNode = document.querySelector("#start-btn");
+const optionsBtnNode = document.querySelector("#options-btn");
 const restartBtnNode = document.querySelector("#restart-btn");
 const gameBoxNode = document.querySelector("#game-box");
 const scoreNode = document.querySelector("#score");
@@ -164,6 +165,9 @@ function gameOver() {
 
 //* EVENT LISTENERS
 startBtnNode.addEventListener("click", gameStart);
+optionsBtnNode.addEventListener("click", () => {
+    window.location.href = "./options.html";
+});
 restartBtnNode.addEventListener("click", restartGame);
 
 window.addEventListener("resize", () => {

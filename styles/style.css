@@ -25,6 +25,69 @@ button:hover {
   background-color: #0d7531;
 }
 
+#options-page {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  padding: 24px;
+  box-sizing: border-box;
+}
+
+.options-panel {
+  width: min(420px, 100%);
+  max-height: 90dvh;
+  padding: 32px;
+  border: 2px solid #00ff66;
+  box-sizing: border-box;
+  overflow-y: auto;
+  text-align: center;
+  font-family: "Courier New", monospace;
+  color: #00ff66;
+}
+
+.options-panel h1 {
+  margin: 0 0 32px;
+  font-size: clamp(24px, 6vw, 40px);
+}
+
+.options-panel h2 {
+  margin: 72px 0 12px;
+}
+
+.game-controls {
+  padding: 0;
+  list-style: none;
+  line-height: 1.8;
+}
+
+.game-controls kbd {
+  font: inherit;
+  font-weight: 700;
+}
+
+.controls-image {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin: 24px 0;
+}
+
+.options-back {
+  display: inline-block;
+  padding: 10px 24px;
+  border: 1px solid #00ff66;
+  color: #00ff66;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.options-back:hover {
+  background-color: #0d7531;
+}
+
 .container {
   display: flex;
   flex-direction: column;
