@@ -11,11 +11,12 @@
 
   <div id="start-screen" class="container">
     <h1>Globe Runner</h1>
-    <button id="start-btn">Start Game</button>
+    <button id="start-btn">¡LET'S ROCK!</button>
     <button id="options-btn">Options</button>
   </div>
 
   <div id="game-screen" class="container">
+    <p class="game-score">Time: <span id="score">0.0</span> s</p>
     <div id="game-viewport">
       <div id="game-box"></div>
     </div>
@@ -23,8 +24,9 @@
 
   <div id="game-over-screen" class="container">
     <h2>Game Over</h2>
-     <button id="restart-btn">restart Game</button>
     <p>The corp caught you.</p>
+    <p class="game-score">Time survived: <span id="final-score">0.0</span> s</p>
+    <button id="restart-btn">restart Game</button>
   </div>
 
   <script src="./js/main.js"></script>

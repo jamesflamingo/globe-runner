@@ -5,8 +5,15 @@ const gameOverScreenNode = document.querySelector("#game-over-screen");
 const startBtnNode = document.querySelector("#start-btn");
 const restartBtnNode = document.querySelector("#restart-btn");
 const gameBoxNode = document.querySelector("#game-box");
-const GAME_EDGE_MARGIN = 80;
+const scoreNode = document.querySelector("#score");
+const finalScoreNode = document.querySelector("#final-score");
+const GAME_BACKGROUND_WIDTH = 971;
+const GAME_BACKGROUND_HEIGHT = 1620;
+const GAME_BUILDING_EDGE_X = 200;
+const GAME_REFERENCE_WIDTH = 390;
 const GAME_FLOOR_HEIGHT_RATIO = 0.82;
+let gameStartedAt = 0;
+let finalScore = 0;
 
 //* GLOBAL GAME VARIABLES
 let playerObj = null;
@@ -26,10 +33,11 @@ function gameStart() {
     addPlayer();
     addEnemy();
 
+    gameStartedAt = performance.now();
+    finalScore = 0;
+    scoreNode.textContent = "0.0";
     pressedKeys.clear();
     previousFrameTime = performance.now();
-
-    //TIME CHANGES
 
     mainIntervalId = setInterval(gameLoop, 1000 / 60);
     enemyIntervalId = setInterval(addEnemy, 1500);
@@ -37,6 +45,8 @@ function gameStart() {
 
 function gameLoop() {
     const currentTime = performance.now();
+    finalScore = (currentTime - gameStartedAt) / 1000;
+    scoreNode.textContent = finalScore.toFixed(1);
     const deltaTime = Math.min((currentTime - previousFrameTime) / 1000, 0.05);
     previousFrameTime = currentTime;
     const movementDirection =
@@ -57,8 +67,8 @@ function addPlayer() {
 
 function addEnemy() {
     const gameWidth = gameBoxNode.clientWidth;
-    const edgeMargin = GAME_EDGE_MARGIN;
-    const gapWidth = 55;
+    const edgeMargin = getGameEdgeMargin();
+    const gapWidth = getGameGapWidth();
     const minBarrierLength = 30;
     const availableBarrierWidth = gameWidth - edgeMargin * 2 - gapWidth;
     const maxShortBarrierLength = Math.floor(availableBarrierWidth / 2) - 10;
@@ -71,6 +81,19 @@ function addEnemy() {
         : longBarrierLength;
     const gapX = edgeMargin + leftBarrierLength;
     enemiesArr.push(new Gate(gapX, gapWidth, edgeMargin));
+}
+
+function getGameEdgeMargin() {
+    const scale = Math.max(
+        gameBoxNode.clientWidth / GAME_BACKGROUND_WIDTH,
+        gameBoxNode.clientHeight / GAME_BACKGROUND_HEIGHT
+    );
+    const backgroundOffsetX = (gameBoxNode.clientWidth - GAME_BACKGROUND_WIDTH * scale) / 2;
+    return Math.max(0, backgroundOffsetX + GAME_BUILDING_EDGE_X * scale);
+}
+
+function getGameGapWidth() {
+    return Math.max(55, Math.min(gameBoxNode.clientWidth * 0.14, 140));
 }
 
 function checkEnemyDespawn() {
@@ -121,6 +144,9 @@ function restartGame() {
 }
 
 function gameOver() {
+    finalScore = (performance.now() - gameStartedAt) / 1000;
+    scoreNode.textContent = finalScore.toFixed(1);
+    finalScoreNode.textContent = finalScore.toFixed(1);
     clearInterval(mainIntervalId);
     clearInterval(enemyIntervalId);
     mainIntervalId = null;
@@ -135,6 +161,23 @@ function gameOver() {
 //* EVENT LISTENERS
 startBtnNode.addEventListener("click", gameStart);
 restartBtnNode.addEventListener("click", restartGame);
+
+window.addEventListener("resize", () => {
+    if (mainIntervalId === null) return;
+
+    const edgeMargin = getGameEdgeMargin();
+    const gapWidth = getGameGapWidth();
+
+    enemiesArr.forEach((enemy) => enemy.resize(gapWidth, edgeMargin));
+
+    if (playerObj) {
+        const maxX = gameBoxNode.clientWidth - edgeMargin - playerObj.width;
+        playerObj.x = Math.max(edgeMargin, Math.min(maxX, playerObj.x));
+        playerObj.y = gameBoxNode.clientHeight * GAME_FLOOR_HEIGHT_RATIO - playerObj.height - 42;
+        playerObj.node.style.left = `${playerObj.x}px`;
+        playerObj.node.style.top = `${playerObj.y}px`;
+    }
+});
 
 window.addEventListener("keydown", (event) => {
     if (!playerObj) return;

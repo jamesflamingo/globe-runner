@@ -12,8 +12,8 @@ class Player {
 
 this.width = 20;
 this.height = 20;
-this.x = GAME_EDGE_MARGIN;
-this.y = gameBoxNode.clientHeight - this.height  -150 ; 
+this.x = getGameEdgeMargin();
+this.y = gameBoxNode.clientHeight * GAME_FLOOR_HEIGHT_RATIO - this.height - 42;
  
  
   this.node.style.width = `${this.width}px`;
@@ -42,9 +42,11 @@ this.speed = 240
   //MOVEMENTS CHANGES
 
 move(direction, deltaTime) {
-const minX = GAME_EDGE_MARGIN;
-const maxX = gameBoxNode.clientWidth - GAME_EDGE_MARGIN - this.width;
-this.x = Math.max(minX, Math.min(maxX, this.x + direction * this.speed * deltaTime));
+const edgeMargin = getGameEdgeMargin();
+const minX = edgeMargin;
+const maxX = gameBoxNode.clientWidth - edgeMargin - this.width;
+const responsiveSpeed = this.speed * gameBoxNode.clientWidth / GAME_REFERENCE_WIDTH;
+this.x = Math.max(minX, Math.min(maxX, this.x + direction * responsiveSpeed * deltaTime));
 this.node.style.left = `${this.x}px`
 }
 
