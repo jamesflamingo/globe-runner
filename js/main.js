@@ -3,6 +3,7 @@ const startScreenNode = document.querySelector("#start-screen");
 const gameScreenNode = document.querySelector("#game-screen");
 const gameOverScreenNode = document.querySelector("#game-over-screen");
 const startBtnNode = document.querySelector("#start-btn");
+const restartBtnNode = document.querySelector("#restart-btn");
 const gameBoxNode = document.querySelector("#game-box");
 const GAME_EDGE_MARGIN = 80;
 
@@ -68,7 +69,6 @@ function addEnemy() {
         ? shortBarrierLength
         : longBarrierLength;
     const gapX = edgeMargin + leftBarrierLength;
-
     enemiesArr.push(new Gate(gapX, gapWidth, edgeMargin));
 }
 
@@ -106,12 +106,20 @@ function checkCollisionPlayerEnemy() {
     }
 }
 
+function restartGame() {
+    enemiesArr.forEach((enemy) => enemy.remove());
+    enemiesArr = [];
+    gameOverScreenNode.style.display = "none";
+    gameStart();
+}
+
 function gameOver() {
     clearInterval(mainIntervalId);
     clearInterval(enemyIntervalId);
     mainIntervalId = null;
     enemyIntervalId = null;
     pressedKeys.clear();
+    playerObj.node.remove();
     playerObj = null;
     gameScreenNode.style.display = "none";
     gameOverScreenNode.style.display = "flex";
@@ -119,6 +127,7 @@ function gameOver() {
 
 //* EVENT LISTENERS
 startBtnNode.addEventListener("click", gameStart);
+restartBtnNode.addEventListener("click", restartGame);
 
 window.addEventListener("keydown", (event) => {
     if (!playerObj) return;
