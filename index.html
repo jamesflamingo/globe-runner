@@ -20,7 +20,8 @@
   </div>
 
   <div id="game-screen" class="container">
-    <p class="game-score"><span id="score">0.0</span></p>
+    <p class="game-score game-timer" aria-label="Time"><span id="timer">0.0</span></p>
+    <p class="game-score game-points" aria-label="Score"><span id="score">0</span></p>
     <div id="game-viewport">
       <div id="game-box"></div>
     </div>
@@ -33,7 +34,10 @@
         src="./images/fbe543d2-e7fa-4f7a-a26d-bb66363ad6ca.png"
         alt="Game over: captured by the corporation"
       >
-      <p class="game-score"><span id="final-score">0.0</span></p>
+      <span class="game-over-time-label">TIME</span>
+      <p class="game-score game-over-timer"><span id="final-time">0.0</span></p>
+      <span class="game-over-score-label">SCORE</span>
+      <p class="game-score game-over-points"><span id="final-score">0</span></p>
       <button id="restart-btn">RESTART GAME</button>
     </div>
   </div>

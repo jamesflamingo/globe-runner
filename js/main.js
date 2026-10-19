@@ -6,7 +6,9 @@ const startBtnNode = document.querySelector("#start-btn");
 const optionsBtnNode = document.querySelector("#options-btn");
 const restartBtnNode = document.querySelector("#restart-btn");
 const gameBoxNode = document.querySelector("#game-box");
+const timerNode = document.querySelector("#timer");
 const scoreNode = document.querySelector("#score");
+const finalTimeNode = document.querySelector("#final-time");
 const finalScoreNode = document.querySelector("#final-score");
 const GAME_BACKGROUND_WIDTH = 971;
 const GAME_BACKGROUND_HEIGHT = 1619;
@@ -16,7 +18,8 @@ const GAME_IMAGE_WIDTH_OFFSET = 32;
 const GAME_REFERENCE_WIDTH = 390;
 const GAME_FLOOR_HEIGHT_RATIO = 0.82;
 let gameStartedAt = 0;
-let finalScore = 0;
+let elapsedTime = 0;
+let gameScore = 0;
 
 //* GLOBAL GAME VARIABLES
 let playerObj = null;
@@ -37,8 +40,10 @@ function gameStart() {
     addEnemy();
 
     gameStartedAt = performance.now();
-    finalScore = 0;
-    scoreNode.textContent = "0.0";
+    elapsedTime = 0;
+    gameScore = 0;
+    timerNode.textContent = "0.0";
+    scoreNode.textContent = String(gameScore);
     pressedKeys.clear();
     previousFrameTime = performance.now();
 
@@ -48,8 +53,8 @@ function gameStart() {
 
 function gameLoop() {
     const currentTime = performance.now();
-    finalScore = (currentTime - gameStartedAt) / 1000;
-    scoreNode.textContent = finalScore.toFixed(1);
+    elapsedTime = (currentTime - gameStartedAt) / 1000;
+    timerNode.textContent = elapsedTime.toFixed(1);
     const deltaTime = Math.min((currentTime - previousFrameTime) / 1000, 0.05);
     previousFrameTime = currentTime;
     const movementDirection =
@@ -149,9 +154,10 @@ function restartGame() {
 }
 
 function gameOver() {
-    finalScore = (performance.now() - gameStartedAt) / 1000;
-    scoreNode.textContent = finalScore.toFixed(1);
-    finalScoreNode.textContent = finalScore.toFixed(1);
+    elapsedTime = (performance.now() - gameStartedAt) / 1000;
+    timerNode.textContent = elapsedTime.toFixed(1);
+    finalTimeNode.textContent = elapsedTime.toFixed(1);
+    finalScoreNode.textContent = String(gameScore);
     clearInterval(mainIntervalId);
     clearInterval(enemyIntervalId);
     mainIntervalId = null;

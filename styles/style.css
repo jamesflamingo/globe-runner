@@ -194,7 +194,6 @@ button:hover {
 #game-screen .game-score {
   position: absolute;
   top: 24.1%;
-  left: calc(18.1vw + 13px);
   z-index: 3;
   display: flex;
   width: 7vw;
@@ -209,6 +208,14 @@ button:hover {
   font-weight: 700;
   line-height: 1;
   white-space: nowrap;
+}
+
+#game-screen .game-timer {
+  left: calc(18.1vw + 13px);
+}
+
+#game-screen .game-points {
+  left: calc(82.3vw - 13px);
 }
 
 #game-box {
@@ -272,7 +279,6 @@ button:hover {
 #game-over-screen .game-score {
   position: absolute;
   top: 87.5%;
-  left: 17.5%;
   z-index: 1;
   margin: 0;
   color: #00ff66;
@@ -280,6 +286,50 @@ button:hover {
   font-size: clamp(18px, 4vw, 36px);
   font-weight: 700;
   transform: translate(-50%, -50%);
+}
+
+.game-over-timer,
+.game-over-time-label {
+  position: absolute;
+  left: 17.5%;
+  z-index: 1;
+  color: #00ff66;
+  font-family: "Courier New", monospace;
+  transform: translate(-50%, -50%);
+}
+
+.game-over-time-label {
+  top: 82%;
+  font-size: clamp(12px, 2.5vw, 22px);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.game-over-timer {
+  top: 87.5%;
+}
+
+.game-over-score-label,
+.game-over-points {
+  position: absolute;
+  left: 82%;
+  z-index: 1;
+  color: #00ff66;
+  font-family: "Courier New", monospace;
+  transform: translate(-50%, -50%);
+}
+
+.game-over-score-label {
+  top: 82%;
+  font-size: clamp(12px, 2.5vw, 22px);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.game-over-points {
+  top: 87.5%;
+  font-size: clamp(18px, 4vw, 36px);
+  font-weight: 700;
 }
 
 #restart-btn {
