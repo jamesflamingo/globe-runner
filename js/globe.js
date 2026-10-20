@@ -1,73 +1,70 @@
 class Gate {
   constructor(gapX, gapWidth) {
     this.scale = getGameScale();
-    this.speed = 2 * this.scale;
+    this.speed = 2 * 0.9 * this.scale;
     this.gapPositionRatio = gapX / (gameAreaNode.clientWidth - gapWidth);
-    this.height = 72 * this.scale;
-    this.length = this.height * ENEMY_IMAGE_ASPECT_RATIO;
-    this.y = -this.height;
+    this.rowHeight = ENEMY_THICKNESS * this.scale;
+    this.y = -this.rowHeight;
 
     this.bars = [
-      this.createBar(gapX - this.length - LEFT_ENEMY_OFFSET, this.length, this.height, "left"),
-      this.createBar(gapX + gapWidth, this.length, this.height, "right")
+      this.createBar("left"),
+      this.createBar("right")
     ];
+    this.layout(gapX, gapWidth);
+  }
+
+  // Each platform starts at its frame edge; all share the same thickness, so the image stretches horizontally.
+  layout(gapX, gapWidth) {
+    const gameWidth = gameAreaNode.clientWidth;
+    const [leftBar, rightBar] = this.bars;
+
+    this.placeBar(leftBar, 0, gapX);
+    this.placeBar(rightBar, gapX + gapWidth, gameWidth - gapX - gapWidth);
+  }
+
+  placeBar(bar, x, width) {
+    bar.x = x;
+    bar.width = width;
+    bar.height = this.rowHeight;
+    bar.y = this.y;
+
+    bar.node.style.left = `${bar.x}px`;
+    bar.node.style.width = `${bar.width}px`;
+    bar.node.style.height = `${bar.height}px`;
+    bar.node.style.top = `${bar.y}px`;
   }
 
   resize(gapWidth) {
-    const gameWidth = gameAreaNode.clientWidth;
     const scale = getGameScale();
     this.y *= scale / this.scale;
     this.scale = scale;
-    this.speed = 2 * scale;
-    this.height = 72 * scale;
-    this.length = this.height * ENEMY_IMAGE_ASPECT_RATIO;
-    const gapX = this.gapPositionRatio * (gameWidth - gapWidth);
-    const [leftBar, rightBar] = this.bars;
+    this.speed = 2 * 0.9 * scale;
+    this.rowHeight = ENEMY_THICKNESS * scale;
+    const gapX = this.gapPositionRatio * (gameAreaNode.clientWidth - gapWidth);
 
-    leftBar.x = gapX - this.length - LEFT_ENEMY_OFFSET;
-    leftBar.width = this.length;
-    leftBar.height = this.height;
-    leftBar.node.style.left = `${leftBar.x}px`;
-    leftBar.node.style.width = `${leftBar.width}px`;
-    leftBar.node.style.height = `${this.height}px`;
-    leftBar.y = this.y;
-    leftBar.node.style.top = `${this.y}px`;
-
-    rightBar.x = gapX + gapWidth;
-    rightBar.width = this.length;
-    rightBar.height = this.height;
-    rightBar.node.style.left = `${rightBar.x}px`;
-    rightBar.node.style.width = `${rightBar.width}px`;
-    rightBar.node.style.height = `${this.height}px`;
-    rightBar.y = this.y;
-    rightBar.node.style.top = `${this.y}px`;
+    this.layout(gapX, gapWidth);
   }
 
-
-  createBar(x, length, thickness, side) {
+  createBar(side) {
     const node = document.createElement("div");
     node.className = "enemy";
-    node.style.width = `${length}px`;
-    node.style.height = `${thickness}px`;
     node.style.boxSizing = "border-box";
     node.style.backgroundImage = 'url("./images/a90f8d0c-6d10-4988-aa90-09df6639a64a-transparent.png")';
     node.style.backgroundSize = "100% 100%";
     node.style.backgroundRepeat = "no-repeat";
     node.style.position = "absolute";
-    node.style.top = `${this.y}px`;
-    node.style.left = `${x}px`;
     gameAreaNode.append(node);
 
     const gapFacingSide = side === "left" ? "right" : "left";
 
-    return { node, x, width: length, height: thickness, y: this.y, gapFacingSide };
+    return { node, x: 0, width: 0, height: 0, y: this.y, gapFacingSide };
   }
 
   automaticMovement() {
     this.y += this.speed;
     this.bars.forEach((bar) => {
       bar.y = this.y;
-      bar.node.style.top = `${this.y}px`;
+      bar.node.style.top = `${bar.y}px`;
     });
   }
 

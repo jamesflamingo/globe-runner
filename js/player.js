@@ -11,8 +11,8 @@ class Player {
   //GLOBE
 
 this.scale = 1;
-this.width = 34;
-this.height = 34;
+this.width = 14;
+this.height = 14;
 this.x = (gameAreaNode.clientWidth - this.width) / 2;
 this.y = gameAreaNode.clientHeight * 0.05;
  
@@ -20,12 +20,12 @@ this.y = gameAreaNode.clientHeight * 0.05;
   this.node.style.width = `${this.width}px`;
   this.node.style.height = `${this.height}px`;
   this.node.style.boxSizing = "border-box";
-  this.node.style.backgroundImage = 'url("./images/113f8409-a90a-4eb0-be36-a2bd885a7115.png")';
+  this.node.style.backgroundImage = 'url("./images/626fdd41-a620-41fe-8dfe-c1767b7efa42.png")';
   this.node.style.backgroundSize = "contain";
   this.node.style.backgroundPosition = "center";
   this.node.style.backgroundRepeat = "no-repeat";
-  this.node.style.filter = "drop-shadow(0 0 6px #ffffff) drop-shadow(0 0 14px #ffffff) drop-shadow(0 0 28px #ffffff)";
-  this.node.style.border = "2px solid #ffffff";
+  this.node.style.boxShadow = "0 0 6px 2px #ffffff, 0 0 16px 6px rgba(255, 255, 255, 0.9), 0 0 36px 14px rgba(255, 255, 255, 0.6), 0 0 70px 28px rgba(255, 255, 255, 0.35)";
+  this.node.style.border = "0px solid #ffffff";
   this.node.style.borderRadius = "100%"
   
   this.node.style.position = "absolute"
@@ -33,7 +33,7 @@ this.y = gameAreaNode.clientHeight * 0.05;
   this.node.style.left = `${this.x}px`
   
 this.speed = 240;
-this.gravity = 256;
+this.gravity = 256 * 0.85 * 0.9;
 this.gravitySpeed = 0;
 
 this.resize();
@@ -51,21 +51,11 @@ this.node.style.left = `${this.x}px`
 }
 
 jump() {
-this.gravitySpeed = -256 * this.scale;
+this.gravitySpeed = -256 * 0.9 * Math.SQRT1_2 * this.scale;
 }
 
-update(deltaTime, verticalDirection = 0) {
-if (verticalDirection !== 0) {
-  const maxY = Math.max(0, gameAreaNode.clientHeight - this.height);
-  this.y = Math.max(
-    0,
-    Math.min(maxY, this.y + verticalDirection * this.speed * deltaTime)
-  );
-  this.gravitySpeed = 0;
-  this.node.style.top = `${this.y}px`;
-  return;
-}
-
+// Returns true when the globe touches the bottom of the play area.
+update(deltaTime) {
 this.gravitySpeed += this.gravity * deltaTime;
 this.y += this.gravitySpeed * deltaTime;
 
@@ -75,34 +65,36 @@ if (this.y < 0) {
 }
 
 const maxY = Math.max(0, gameAreaNode.clientHeight - this.height);
-if (this.y >= maxY) {
+const touchedBottom = this.y >= maxY;
+if (touchedBottom) {
   this.y = maxY;
   this.gravitySpeed = 0;
 }
 
 this.node.style.top = `${this.y}px`;
+return touchedBottom;
 }
 
 resize() {
 const oldMaxX = Math.max(0, gameAreaNode.clientWidth - this.width);
 const xRatio = oldMaxX > 0 ? this.x / oldMaxX : 0.5;
 const scale = getGameScale();
-const maxX = Math.max(0, gameAreaNode.clientWidth - 34 * scale);
+const maxX = Math.max(0, gameAreaNode.clientWidth - 14 * scale);
 const previousScale = this.scale;
 
 this.scale = scale;
-this.width = 34 * scale;
-this.height = 34 * scale;
+this.width = 14 * scale;
+this.height = 14 * scale;
 this.x = Math.max(0, Math.min(maxX, xRatio * maxX));
 this.y = Math.min(gameAreaNode.clientHeight * 0.05, gameAreaNode.clientHeight - this.height);
 this.speed = 240 * scale;
-this.gravity = 256 * scale;
+this.gravity = 256 * 0.85 * 0.9 * scale;
 this.gravitySpeed *= scale / previousScale;
 
 this.node.style.width = `${this.width}px`;
 this.node.style.height = `${this.height}px`;
-this.node.style.borderWidth = `${2 * scale}px`;
-this.node.style.filter = `drop-shadow(0 0 ${6 * scale}px #ffffff) drop-shadow(0 0 ${14 * scale}px #ffffff) drop-shadow(0 0 ${28 * scale}px #ffffff)`;
+this.node.style.borderWidth = "0px";
+this.node.style.boxShadow = `0 0 ${6 * scale}px ${2 * scale}px #ffffff, 0 0 ${16 * scale}px ${6 * scale}px rgba(255, 255, 255, 0.9), 0 0 ${36 * scale}px ${14 * scale}px rgba(255, 255, 255, 0.6), 0 0 ${70 * scale}px ${28 * scale}px rgba(255, 255, 255, 0.35)`;
 this.node.style.left = `${this.x}px`;
 this.node.style.top = `${this.y}px`;
 }

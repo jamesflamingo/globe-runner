@@ -6,8 +6,8 @@ A browser game where you move the globe left and right through gaps in pairs of 
 
 1. Open `index.html` in a web browser.
 2. Select **Start Game**.
-3. Use the arrow keys to move the player in all four directions, or press **Space** to jump.
-4. Steer through the openings between the falling barriers. A collision ends the game.
+3. Use the left and right arrow keys to move the player, and press **Space** to jump.
+4. Steer through the openings between the falling barriers. A collision, or touching the bottom of the play area, ends the game.
 
 ## Project folders and files
 
@@ -19,8 +19,9 @@ A browser game where you move the globe left and right through gaps in pairs of 
 ### `js/`
 
 - `main.js` — starts the game, runs the game loop, and scales barrier openings and collisions to the play area's width.
-- `player.js` — creates a globe that scales to the play area's width, moves it in four directions, and lets it jump while staying within the visible frame; touching the frame does not end the game.
-- `globe.js` — defines pairs of falling platforms. Each one uses the full, uncropped enemy image at its original proportions, the same image on both sides, with its inner edge on the opening; platforms scale to the play area's width and fall proportionally to their size.
+- `player.js` — creates a globe that scales to the play area's width, moves it left and right, and lets it jump with Space while staying within the visible frame; touching the bottom of the play area ends the game.
+- `globe.js` — defines pairs of falling platforms. Every platform has the same thickness and uses the full, uncropped enemy image (stretched horizontally to its length), the same image on both sides, starting at its frame edge and ending at the opening, so nothing extends outside the play area; platforms scale to the play area's width and fall proportionally to their size.
+- `pickup.js` — collectible object (`images/descarga (1).png`) that falls between enemy rows; touching it removes it and adds 10 points to the score.
 
 ### `styles/`
 
