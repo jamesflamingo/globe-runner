@@ -1,12 +1,12 @@
 # Globe Runner
 
-A browser game where you move the yellow globe left and right through gaps in pairs of red side-attached barriers falling from the top of the game area.
+A browser game where you move the globe left and right through gaps in pairs of barriers falling from the top of the game area.
 
 ## How to play
 
 1. Open `index.html` in a web browser.
 2. Select **Start Game**.
-3. Use the **Left Arrow** and **Right Arrow** keys to move the player.
+3. Use the arrow keys to move the player in all four directions, or press **Space** to jump.
 4. Steer through the openings between the falling barriers. A collision ends the game.
 
 ## Project folders and files
@@ -18,9 +18,9 @@ A browser game where you move the yellow globe left and right through gaps in pa
 
 ### `js/`
 
-- `main.js` — starts the game, runs the game loop, spawns side barriers every 1.87 seconds with randomly different horizontal lengths, a fixed 70-pixel gap, and 45-pixel margins aligned with the background buildings; the vertical thickness stays fixed at 80 pixels.
-- `player.js` — creates the yellow, round player near the bottom of the game area and moves it left or right while keeping it inside the play area; collision detection uses a smaller hitbox so the globe can get closer to barriers.
-- `globe.js` — defines the falling gate obstacles, with fixed-thickness bars attached to both sides of the game area that fall at 2 pixels per frame.
+- `main.js` — starts the game, runs the game loop, and scales barrier openings and collisions to the play area's width.
+- `player.js` — creates a globe that scales to the play area's width, moves it in four directions, and lets it jump while staying within the visible frame; touching the frame does not end the game.
+- `globe.js` — defines pairs of falling platforms. Each one uses the full, uncropped enemy image at its original proportions, the same image on both sides, with its inner edge on the opening; platforms scale to the play area's width and fall proportionally to their size.
 
 ### `styles/`
 
@@ -28,8 +28,12 @@ A browser game where you move the yellow globe left and right through gaps in pa
 
 ### `images/`
 
-- `a90ddd84-0e38-411e-9099-48d6feb5a997.png` — background image for the game area.
-- `d755df37-1681-4665-9cb1-e67a6ab3f00e.png` — player globe image.
+- `50542cc8-caf4-4ffd-ada8-f555c68ae277.png` — start screen artwork.
+- `354dc84f-f7f5-404c-a75c-e9730b5318e4.png` — game background and frame.
+- `76632359-071a-4290-8ae2-e48b4ac8aad2.png` — Game Over artwork.
+- `113f8409-a90a-4eb0-be36-a2bd885a7115.png` — player globe.
+- `a90f8d0c-6d10-4988-aa90-09df6639a64a.png` — source artwork for all falling barriers.
+- `a90f8d0c-6d10-4988-aa90-09df6639a64a-transparent.png` — the same artwork with its baked checkerboard removed for display.
 
 ## Technologies
 

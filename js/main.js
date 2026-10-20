@@ -6,18 +6,18 @@ const startBtnNode = document.querySelector("#start-btn");
 const optionsBtnNode = document.querySelector("#options-btn");
 const restartBtnNode = document.querySelector("#restart-btn");
 const gameBoxNode = document.querySelector("#game-box");
+const gameAreaNode = document.querySelector("#game-area");
 const timerNode = document.querySelector("#timer");
 const scoreNode = document.querySelector("#score");
 const finalTimeNode = document.querySelector("#final-time");
 const finalScoreNode = document.querySelector("#final-score");
-const GAME_BACKGROUND_WIDTH = 971;
-const GAME_BACKGROUND_HEIGHT = 1619;
-const GAME_BUILDING_EDGE_X = 200;
-const GAME_IMAGE_WIDTH_RATIO = 0.8;
-const GAME_IMAGE_WIDTH_OFFSET = 32;
 const GAME_REFERENCE_WIDTH = 390;
-const GAME_FLOOR_HEIGHT_RATIO = 0.82;
-const PLAYER_FLOOR_CLEARANCE = 356.85;
+const getGameScale = () => gameAreaNode.clientWidth / GAME_REFERENCE_WIDTH;
+const ENEMY_IMAGE_ASPECT_RATIO = 2172 / 724;
+const LEFT_ENEMY_OFFSET = 2;
+const ENEMY_COLLISION_TOP_RATIO = 0.22;
+const ENEMY_COLLISION_HEIGHT_RATIO = 0.42;
+const ENEMY_GAP_EDGE_COLLISION_INSET = 12;
 let gameStartedAt = 0;
 let elapsedTime = 0;
 let gameScore = 0;
@@ -38,7 +38,7 @@ function gameStart() {
     gameScreenNode.style.display = "flex";
 
     addPlayer();
-    addEnemy();
+    addEnemy(true);
 
     gameStartedAt = performance.now();
     elapsedTime = 0;
@@ -60,12 +60,14 @@ function gameLoop() {
     previousFrameTime = currentTime;
     const movementDirection =
         Number(pressedKeys.has("ArrowRight")) - Number(pressedKeys.has("ArrowLeft"));
+    const verticalDirection =
+        Number(pressedKeys.has("ArrowDown")) - Number(pressedKeys.has("ArrowUp"));
 
     if (movementDirection !== 0) {
         playerObj.move(movementDirection, deltaTime);
     }
 
-    playerObj.update(deltaTime);
+    playerObj.update(deltaTime, verticalDirection);
     enemiesArr.forEach((enemy) => enemy.automaticMovement());
     checkEnemyDespawn();
     checkCollisionPlayerEnemy();
@@ -75,13 +77,13 @@ function addPlayer() {
     playerObj = new Player();
 }
 
-function addEnemy() {
-    const gameWidth = gameBoxNode.clientWidth;
-    const edgeMargin = getGameEdgeMargin();
+function addEnemy(centerGap = false) {
+    const gameWidth = gameAreaNode.clientWidth;
+    const scale = getGameScale();
     const gapWidth = getGameGapWidth();
-    const minBarrierLength = 30;
-    const availableBarrierWidth = gameWidth - edgeMargin * 2 - gapWidth;
-    const maxShortBarrierLength = Math.floor(availableBarrierWidth / 2) - 10;
+    const minBarrierLength = 30 * scale;
+    const availableBarrierWidth = gameWidth - gapWidth;
+    const maxShortBarrierLength = Math.floor(availableBarrierWidth / 2) - 10 * scale;
     const shortBarrierLength = minBarrierLength + Math.floor(
         Math.random() * (maxShortBarrierLength - minBarrierLength + 1)
     );
@@ -89,28 +91,24 @@ function addEnemy() {
     const leftBarrierLength = Math.random() < 0.5
         ? shortBarrierLength
         : longBarrierLength;
-    const gapX = edgeMargin + leftBarrierLength;
-    enemiesArr.push(new Gate(gapX, gapWidth, edgeMargin));
-}
-
-function getGameEdgeMargin() {
-    const imageWidth = Math.max(
-        0,
-        gameBoxNode.clientWidth * GAME_IMAGE_WIDTH_RATIO - GAME_IMAGE_WIDTH_OFFSET
-    );
-    const imageOffsetX = (gameBoxNode.clientWidth - imageWidth) / 2;
-    const buildingEdge = GAME_BUILDING_EDGE_X / GAME_BACKGROUND_WIDTH * imageWidth;
-
-    return imageOffsetX + buildingEdge;
+    const gapX = centerGap
+        ? (gameWidth - gapWidth) / 2
+        : leftBarrierLength;
+    enemiesArr.push(new Gate(gapX, gapWidth));
 }
 
 function getGameGapWidth() {
-    return Math.max(45, Math.min(gameBoxNode.clientWidth * 0.12, 120)) * 0.88;
+    const gameWidth = gameAreaNode.clientWidth;
+    const scale = getGameScale();
+    const maximumGapWidth = Math.max(0, gameWidth - 80 * scale);
+    const responsiveGapWidth = Math.max(90 * scale, Math.min(gameWidth * 0.42, 150 * scale));
+
+    return Math.min(maximumGapWidth, responsiveGapWidth);
 }
 
 function checkEnemyDespawn() {
     enemiesArr = enemiesArr.filter((enemy) => {
-        if (enemy.y >= gameBoxNode.clientHeight) {
+        if (enemy.y >= gameAreaNode.clientHeight) {
             enemy.remove();
             return false;
         }
@@ -119,31 +117,53 @@ function checkEnemyDespawn() {
     });
 }
 
-function checkCollision(element1, element2) {
+function checkCircleCollision(circle, rectangle) {
+    const closestX = Math.max(
+        rectangle.x,
+        Math.min(circle.x, rectangle.x + rectangle.width)
+    );
+    const closestY = Math.max(
+        rectangle.y,
+        Math.min(circle.y, rectangle.y + rectangle.height)
+    );
+    const distanceX = circle.x - closestX;
+    const distanceY = circle.y - closestY;
+
     return (
-        element1.x < element2.x + element2.width &&
-        element1.x + element1.width > element2.x &&
-        element1.y < element2.y + element2.height &&
-        element1.y + element1.height > element2.y
+        distanceX * distanceX + distanceY * distanceY <=
+        circle.radius * circle.radius
     );
 }
 
 function checkCollisionPlayerEnemy() {
-    const playerHitboxInset = 4;
+    const playerHitboxInset = 6 * getGameScale();
     const playerHitbox = {
-        x: playerObj.x + playerHitboxInset,
-        y: playerObj.y + playerHitboxInset,
-        width: playerObj.width - playerHitboxInset * 2,
-        height: playerObj.height - playerHitboxInset * 2
+        x: playerObj.x + playerObj.width / 2,
+        y: playerObj.y + playerObj.height / 2,
+        radius: Math.max(
+            0,
+            Math.min(playerObj.width, playerObj.height) / 2 - playerHitboxInset
+        )
     };
 
     const hitEnemy = enemiesArr.some((gate) =>
-        gate.bars.some((bar) => checkCollision(playerHitbox, bar))
-    );
-    const floorY = gameBoxNode.clientHeight * GAME_FLOOR_HEIGHT_RATIO;
-    const hitFloor = playerObj.y + playerObj.height >= floorY;
+        gate.bars.some((bar) => {
+            const edgeInset = Math.min(
+                ENEMY_GAP_EDGE_COLLISION_INSET * getGameScale(),
+                bar.width / 2
+            );
+            const collisionBar = {
+                ...bar,
+                x: bar.x + (bar.gapFacingSide === "left" ? edgeInset : 0),
+                width: Math.max(0, bar.width - edgeInset),
+                y: bar.y + bar.height * ENEMY_COLLISION_TOP_RATIO,
+                height: bar.height * ENEMY_COLLISION_HEIGHT_RATIO
+            };
 
-    if (hitEnemy || hitFloor) {
+            return checkCircleCollision(playerHitbox, collisionBar);
+        })
+    );
+    if (hitEnemy) {
         gameOver();
     }
 }
@@ -181,17 +201,11 @@ restartBtnNode.addEventListener("click", restartGame);
 window.addEventListener("resize", () => {
     if (mainIntervalId === null) return;
 
-    const edgeMargin = getGameEdgeMargin();
     const gapWidth = getGameGapWidth();
-
-    enemiesArr.forEach((enemy) => enemy.resize(gapWidth, edgeMargin));
+    enemiesArr.forEach((enemy) => enemy.resize(gapWidth));
 
     if (playerObj) {
-        const maxX = gameBoxNode.clientWidth - edgeMargin - playerObj.width;
-        playerObj.x = Math.max(edgeMargin, Math.min(maxX, playerObj.x));
-        playerObj.y = gameBoxNode.clientHeight * GAME_FLOOR_HEIGHT_RATIO - playerObj.height - PLAYER_FLOOR_CLEARANCE;
-        playerObj.node.style.left = `${playerObj.x}px`;
-        playerObj.node.style.top = `${playerObj.y}px`;
+        playerObj.resize();
     }
 });
 
@@ -206,7 +220,12 @@ window.addEventListener("keydown", (event) => {
         return;
     }
 
-    if (event.code === "ArrowLeft" || event.code === "ArrowRight") {
+    if (
+        event.code === "ArrowLeft" ||
+        event.code === "ArrowRight" ||
+        event.code === "ArrowUp" ||
+        event.code === "ArrowDown"
+    ) {
         event.preventDefault();
         pressedKeys.add(event.code);
     }

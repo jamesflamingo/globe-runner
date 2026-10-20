@@ -1,6 +1,6 @@
 @font-face {
-  font-family: "Dune Rise";
-  src: url("../fonts/Dune_Rise.otf") format("opentype");
+  font-family: "Press Start 2P";
+  src: url("../fonts/PressStart2P.ttf") format("truetype");
   font-display: swap;
 }
 
@@ -8,7 +8,7 @@ body {
   margin: 0;
   background-color: #000000;
   color: #f8fafc;
-  font-family: "Dune Rise", sans-serif;
+  font-family: "Press Start 2P", monospace;
 }
 
 :root {
@@ -54,7 +54,7 @@ button:hover {
   box-sizing: border-box;
   overflow-y: auto;
   text-align: center;
-  font-family: "Dune Rise", sans-serif;
+  font-family: "Press Start 2P", monospace;
   color: #00ff66;
 }
 
@@ -80,9 +80,11 @@ button:hover {
 
 .controls-image {
   display: block;
-  width: 100%;
+  width: min(100%, 420px);
+  max-height: 90dvh;
   height: auto;
-  margin: 24px 0;
+  margin: 0;
+  object-fit: contain;
 }
 
 .options-back {
@@ -121,8 +123,8 @@ button:hover {
   top: 50%;
   left: 50%;
   z-index: -1;
-  width: var(--screen-image-width);
-  height: var(--screen-image-height);
+  width: 100vw;
+  height: 100dvh;
   transform: translate(-50%, -50%);
   object-fit: fill;
   object-position: center;
@@ -130,34 +132,44 @@ button:hover {
 
 #start-btn {
   position: absolute;
-  top: 72.5%;
-  left: 50%;
-  width: calc(31.2vw - 12px);
-  height: 6.4%;
+  top: 68.3%;
+  left: 49.3%;
+  width: 22.8%;
+  height: 7.5%;
   box-sizing: border-box;
   padding: 0 4px;
-  font-family: "Dune Rise", sans-serif;
-  font-size: clamp(14px, 2.6vw, 28px);
+  font-family: "Press Start 2P", monospace;
+  font-size: clamp(10px, 1.8vw, 24px);
   font-weight: 700;
   letter-spacing: 0.06em;
   color: #00ff66;
-  border: 2px solid #00ff66;
-  border-radius: 2px;
+  border: 0;
+  border-radius: 0;
   margin-top: 0;
   transform: translate(-50%, -50%);
   z-index: 1;
 }
 
+#start-btn:hover {
+  background-color: rgba(0, 117, 49, 0.7);
+}
+
 #options-btn {
   position: absolute;
-  top: 72.5%;
-  left: calc(22% + 25px);
-  width: 13vw;
+  top: 68.3%;
+  left: 31.5%;
+  width: 11.5%;
   box-sizing: border-box;
-  padding: 4px;
-  font-family: "Dune Rise", sans-serif;
-  font-size: clamp(19px, calc(1.2vw + 10px), 24px);
+  height: 7.5%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0 4px;
+  font-family: "Press Start 2P", monospace;
+  font-size: clamp(8px, 1.1vw, 15px);
   font-weight: 700;
+  line-height: 1.4;
   color: #00ff66;
   background: transparent;
   border: none;
@@ -169,7 +181,7 @@ button:hover {
 }
 
 #options-btn:hover {
-  background-color: #0d7531;
+  background-color: rgba(0, 117, 49, 0.7);
 }
 
 #game-viewport {
@@ -210,7 +222,7 @@ button:hover {
   margin: 0;
   transform: translate(-50%, -50%);
   color: #00ff66;
-  font-family: "Dune Rise", sans-serif;
+  font-family: "Press Start 2P", monospace;
   font-size: clamp(22px, 3vw, 40px);
   font-weight: 700;
   line-height: 1;
@@ -227,8 +239,8 @@ button:hover {
 
 #game-box {
   background-color: #000000;
-  background-image: url("../images/fac74a0d-35ab-48b9-8072-a4143b3b0b8c.png");
-  background-size: var(--screen-image-width) var(--screen-image-height);
+  background-image: url("../images/354dc84f-f7f5-404c-a75c-e9730b5318e4.png");
+  background-size: 100% 100%;
   background-position: center;
   background-repeat: no-repeat;
   box-sizing: border-box;
@@ -247,8 +259,17 @@ button:hover {
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
 }
 
-#game-box .enemy,
-#game-box .player {
+#game-area {
+  position: absolute;
+  top: 6%;
+  right: 23.5%;
+  bottom: 6.5%;
+  left: 23.5%;
+  overflow: hidden;
+}
+
+#game-area .enemy,
+#game-area .player {
   z-index: 1;
 }
 
@@ -272,8 +293,8 @@ button:hover {
 
 .game-over-artwork {
   position: relative;
-  width: min(100vw, calc(100dvh * 1122 / 1402));
-  aspect-ratio: 1122 / 1402;
+  width: min(100vw, calc(100dvh * 1670 / 942));
+  aspect-ratio: 1670 / 942;
   flex: none;
 }
 
@@ -285,12 +306,12 @@ button:hover {
 
 #game-over-screen .game-score {
   position: absolute;
-  top: 87.5%;
+  top: 89%;
   z-index: 1;
   margin: 0;
   color: #00ff66;
-  font-family: "Dune Rise", sans-serif;
-  font-size: clamp(18px, 4vw, 36px);
+  font-family: "Press Start 2P", monospace;
+  font-size: clamp(14px, 2.2vw, 32px);
   font-weight: 700;
   transform: translate(-50%, -50%);
 }
@@ -298,61 +319,67 @@ button:hover {
 .game-over-timer,
 .game-over-time-label {
   position: absolute;
-  left: 17.5%;
+  left: 33%;
   z-index: 1;
   color: #00ff66;
-  font-family: "Dune Rise", sans-serif;
+  font-family: "Press Start 2P", monospace;
   transform: translate(-50%, -50%);
 }
 
 .game-over-time-label {
-  top: calc(82% + 20px);
-  font-size: clamp(12px, 2.5vw, 22px);
+  top: 81.5%;
+  font-size: clamp(10px, 1.4vw, 20px);
   font-weight: 700;
   letter-spacing: 0.08em;
 }
 
 #game-over-screen .game-over-timer {
-  top: calc(87.5% + 25px);
+  top: 89%;
 }
 
 .game-over-score-label,
 .game-over-points {
   position: absolute;
-  left: 82%;
+  left: 67%;
   z-index: 1;
   color: #00ff66;
-  font-family: "Dune Rise", sans-serif;
+  font-family: "Press Start 2P", monospace;
   transform: translate(-50%, -50%);
 }
 
 .game-over-score-label {
-  top: calc(82% + 20px);
-  font-size: clamp(12px, 2.5vw, 22px);
+  top: 81.5%;
+  font-size: clamp(10px, 1.4vw, 20px);
   font-weight: 700;
   letter-spacing: 0.08em;
 }
 
 #game-over-screen .game-over-points {
-  top: calc(87.5% + 25px);
-  font-size: clamp(18px, 4vw, 36px);
+  top: 89%;
+  font-size: clamp(14px, 2.2vw, 32px);
   font-weight: 700;
 }
 
 #restart-btn {
   position: absolute;
-  top: 87.5%;
-  left: 49.5%;
+  top: 86%;
+  left: 50%;
   z-index: 1;
-  width: 32%;
-  height: 17%;
+  display: flex;
+  width: 17%;
+  height: 13%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6em;
   margin: 0;
   padding: 0;
   color: #00ff66;
-  font-family: "Dune Rise", sans-serif;
-  font-size: clamp(10px, 2.2vw, 20px);
+  font-family: "Press Start 2P", monospace;
+  font-size: clamp(8px, 1.2vw, 16px);
   font-weight: 700;
   letter-spacing: 0.06em;
+  line-height: 1.4;
   transform: translate(-50%, -50%);
   border: 0;
   border-radius: 0;
@@ -361,14 +388,7 @@ button:hover {
 }
 
 .restart-line {
-  position: absolute;
-  top: calc(17.65% + 20px);
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
-
-.restart-game-line {
-  top: 65%;
+  position: static;
 }
 
 #restart-btn:hover {
