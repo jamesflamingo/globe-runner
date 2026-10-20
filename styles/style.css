@@ -1,7 +1,14 @@
+@font-face {
+  font-family: "Dune Rise";
+  src: url("../fonts/Dune_Rise.otf") format("opentype");
+  font-display: swap;
+}
+
 body {
   margin: 0;
   background-color: #000000;
   color: #f8fafc;
+  font-family: "Dune Rise", sans-serif;
 }
 
 :root {
@@ -47,7 +54,7 @@ button:hover {
   box-sizing: border-box;
   overflow-y: auto;
   text-align: center;
-  font-family: "Courier New", monospace;
+  font-family: "Dune Rise", sans-serif;
   color: #00ff66;
 }
 
@@ -129,7 +136,7 @@ button:hover {
   height: 6.4%;
   box-sizing: border-box;
   padding: 0 4px;
-  font-family: "Courier New", monospace;
+  font-family: "Dune Rise", sans-serif;
   font-size: clamp(14px, 2.6vw, 28px);
   font-weight: 700;
   letter-spacing: 0.06em;
@@ -148,7 +155,7 @@ button:hover {
   width: 13vw;
   box-sizing: border-box;
   padding: 4px;
-  font-family: "Courier New", monospace;
+  font-family: "Dune Rise", sans-serif;
   font-size: clamp(19px, calc(1.2vw + 10px), 24px);
   font-weight: 700;
   color: #00ff66;
@@ -203,7 +210,7 @@ button:hover {
   margin: 0;
   transform: translate(-50%, -50%);
   color: #00ff66;
-  font-family: "Courier New", monospace;
+  font-family: "Dune Rise", sans-serif;
   font-size: clamp(22px, 3vw, 40px);
   font-weight: 700;
   line-height: 1;
@@ -282,7 +289,7 @@ button:hover {
   z-index: 1;
   margin: 0;
   color: #00ff66;
-  font-family: "Courier New", monospace;
+  font-family: "Dune Rise", sans-serif;
   font-size: clamp(18px, 4vw, 36px);
   font-weight: 700;
   transform: translate(-50%, -50%);
@@ -294,19 +301,19 @@ button:hover {
   left: 17.5%;
   z-index: 1;
   color: #00ff66;
-  font-family: "Courier New", monospace;
+  font-family: "Dune Rise", sans-serif;
   transform: translate(-50%, -50%);
 }
 
 .game-over-time-label {
-  top: 82%;
+  top: calc(82% + 20px);
   font-size: clamp(12px, 2.5vw, 22px);
   font-weight: 700;
   letter-spacing: 0.08em;
 }
 
-.game-over-timer {
-  top: 87.5%;
+#game-over-screen .game-over-timer {
+  top: calc(87.5% + 25px);
 }
 
 .game-over-score-label,
@@ -315,19 +322,19 @@ button:hover {
   left: 82%;
   z-index: 1;
   color: #00ff66;
-  font-family: "Courier New", monospace;
+  font-family: "Dune Rise", sans-serif;
   transform: translate(-50%, -50%);
 }
 
 .game-over-score-label {
-  top: 82%;
+  top: calc(82% + 20px);
   font-size: clamp(12px, 2.5vw, 22px);
   font-weight: 700;
   letter-spacing: 0.08em;
 }
 
-.game-over-points {
-  top: 87.5%;
+#game-over-screen .game-over-points {
+  top: calc(87.5% + 25px);
   font-size: clamp(18px, 4vw, 36px);
   font-weight: 700;
 }
@@ -342,16 +349,26 @@ button:hover {
   margin: 0;
   padding: 0;
   color: #00ff66;
-  font-family: "Courier New", monospace;
+  font-family: "Dune Rise", sans-serif;
   font-size: clamp(10px, 2.2vw, 20px);
   font-weight: 700;
   letter-spacing: 0.06em;
-  white-space: nowrap;
   transform: translate(-50%, -50%);
   border: 0;
   border-radius: 0;
   box-shadow: none;
   background: transparent;
+}
+
+.restart-line {
+  position: absolute;
+  top: calc(17.65% + 20px);
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.restart-game-line {
+  top: 65%;
 }
 
 #restart-btn:hover {

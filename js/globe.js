@@ -1,6 +1,6 @@
 class Gate {
   constructor(gapX, gapWidth, edgeMargin) {
-    this.y = 0;
+    this.y = -162;
     this.speed = 2;
     this.gapPositionRatio =
       (gapX - edgeMargin) /

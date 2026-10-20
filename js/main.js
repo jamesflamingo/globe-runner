@@ -17,6 +17,7 @@ const GAME_IMAGE_WIDTH_RATIO = 0.8;
 const GAME_IMAGE_WIDTH_OFFSET = 32;
 const GAME_REFERENCE_WIDTH = 390;
 const GAME_FLOOR_HEIGHT_RATIO = 0.82;
+const PLAYER_FLOOR_CLEARANCE = 356.85;
 let gameStartedAt = 0;
 let elapsedTime = 0;
 let gameScore = 0;
@@ -48,7 +49,7 @@ function gameStart() {
     previousFrameTime = performance.now();
 
     mainIntervalId = setInterval(gameLoop, 1000 / 60);
-    enemyIntervalId = setInterval(addEnemy, 1500);
+    enemyIntervalId = setInterval(addEnemy, 2700);
 }
 
 function gameLoop() {
@@ -64,6 +65,7 @@ function gameLoop() {
         playerObj.move(movementDirection, deltaTime);
     }
 
+    playerObj.update(deltaTime);
     enemiesArr.forEach((enemy) => enemy.automaticMovement());
     checkEnemyDespawn();
     checkCollisionPlayerEnemy();
@@ -187,7 +189,7 @@ window.addEventListener("resize", () => {
     if (playerObj) {
         const maxX = gameBoxNode.clientWidth - edgeMargin - playerObj.width;
         playerObj.x = Math.max(edgeMargin, Math.min(maxX, playerObj.x));
-        playerObj.y = gameBoxNode.clientHeight * GAME_FLOOR_HEIGHT_RATIO - playerObj.height - 42;
+        playerObj.y = gameBoxNode.clientHeight * GAME_FLOOR_HEIGHT_RATIO - playerObj.height - PLAYER_FLOOR_CLEARANCE;
         playerObj.node.style.left = `${playerObj.x}px`;
         playerObj.node.style.top = `${playerObj.y}px`;
     }
@@ -195,6 +197,14 @@ window.addEventListener("resize", () => {
 
 window.addEventListener("keydown", (event) => {
     if (!playerObj) return;
+
+    if (event.code === "Space") {
+        event.preventDefault();
+        if (!event.repeat) {
+            playerObj.jump();
+        }
+        return;
+    }
 
     if (event.code === "ArrowLeft" || event.code === "ArrowRight") {
         event.preventDefault();
