@@ -11,17 +11,9 @@ body {
   font-family: "Press Start 2P", monospace;
 }
 
-:root {
-  --screen-image-width: calc(80vw - 32px);
-  --screen-image-height: 100dvh;
-  --tower-opening-width: calc(47.04vw - 18.82px);
-  --screen-sky-left: calc(26vw + 9.6px);
-  --screen-sky-width: calc(48vw - 19.2px);
-}
-
 button {
   background-color: #38bff800;
-  color: rgb(60, 255, 6);
+  color: #00f888;
   padding: 14px 24px;
   font-size: 18px;
   margin-top: 16px;
@@ -50,21 +42,17 @@ button:hover {
   width: min(420px, 100%);
   max-height: 90dvh;
   padding: 32px;
-  border: 2px solid #00ff66;
+  border: 2px solid #00f888;
   box-sizing: border-box;
   overflow-y: auto;
   text-align: center;
   font-family: "Press Start 2P", monospace;
-  color: #00ff66;
+  color: #00f888;
 }
 
 .options-panel h1 {
   margin: 0 0 32px;
   font-size: clamp(24px, 6vw, 40px);
-}
-
-.options-panel h2 {
-  margin: 72px 0 12px;
 }
 
 .game-controls {
@@ -78,20 +66,11 @@ button:hover {
   font-weight: 700;
 }
 
-.controls-image {
-  display: block;
-  width: min(100%, 420px);
-  max-height: 90dvh;
-  height: auto;
-  margin: 0;
-  object-fit: contain;
-}
-
 .options-back {
   display: inline-block;
   padding: 10px 24px;
-  border: 1px solid #00ff66;
-  color: #00ff66;
+  border: 1px solid #00f888;
+  color: #00f888;
   font-weight: 700;
   text-decoration: none;
 }
@@ -142,7 +121,7 @@ button:hover {
   font-size: clamp(10px, 1.8vw, 24px);
   font-weight: 700;
   letter-spacing: 0.06em;
-  color: #00ff66;
+  color: #00f888;
   border: 0;
   border-radius: 0;
   margin-top: 0;
@@ -170,7 +149,7 @@ button:hover {
   font-size: clamp(8px, 1.1vw, 15px);
   font-weight: 700;
   line-height: 1.4;
-  color: #00ff66;
+  color: #00f888;
   background: transparent;
   border: none;
   border-radius: 0;
@@ -221,7 +200,7 @@ button:hover {
   justify-content: center;
   margin: 0;
   transform: translate(-50%, -50%);
-  color: #00ff66;
+  color: #00f888;
   font-family: "Press Start 2P", monospace;
   font-size: clamp(14px, 2vw, 30px);
   font-weight: 700;
@@ -268,6 +247,18 @@ button:hover {
   overflow: hidden;
 }
 
+#game-area::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: var(--floor-rise, 0%);
+  height: max(3px, 0.4vw);
+  background: rgb(255, 30, 30);
+  box-shadow: 0 0 6px 2px rgba(255, 30, 30, 0.9), 0 0 18px 6px rgba(255, 30, 30, 0.5);
+  z-index: 2;
+}
+
 #game-area .enemy,
 #game-area .player {
   z-index: 1;
@@ -310,7 +301,7 @@ button:hover {
   top: 89%;
   z-index: 1;
   margin: 0;
-  color: #00ff66;
+  color: #00f888;
   font-family: "Press Start 2P", monospace;
   font-size: clamp(14px, 2.2vw, 32px);
   font-weight: 700;
@@ -322,7 +313,7 @@ button:hover {
   position: absolute;
   left: 33%;
   z-index: 1;
-  color: #00ff66;
+  color: #00f888;
   font-family: "Press Start 2P", monospace;
   transform: translate(-50%, -50%);
 }
@@ -343,7 +334,7 @@ button:hover {
   position: absolute;
   left: 67%;
   z-index: 1;
-  color: #00ff66;
+  color: #00f888;
   font-family: "Press Start 2P", monospace;
   transform: translate(-50%, -50%);
 }
@@ -375,7 +366,7 @@ button:hover {
   gap: 0.6em;
   margin: 0;
   padding: 0;
-  color: #00ff66;
+  color: #00f888;
   font-family: "Press Start 2P", monospace;
   font-size: clamp(8px, 1.2vw, 16px);
   font-weight: 700;

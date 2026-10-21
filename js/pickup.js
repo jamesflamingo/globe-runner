@@ -1,5 +1,5 @@
 const PICKUP_SIZE = 26;
-const PICKUP_SPEED = 2 * 0.9;
+const PICKUP_SPEED = 2 * 0.9 * 0.9;
 
 class Pickup {
   constructor() {
@@ -11,7 +11,7 @@ class Pickup {
     this.node = document.createElement("div");
     this.node.className = "pickup";
     this.node.style.position = "absolute";
-    this.node.style.backgroundImage = 'url("./images/descarga%20(1).png")';
+    this.node.style.backgroundImage = 'url("./images/globe_runner_orbe_dorado.gif")';
     this.node.style.backgroundSize = "contain";
     this.node.style.backgroundPosition = "center";
     this.node.style.backgroundRepeat = "no-repeat";
@@ -25,11 +25,14 @@ class Pickup {
     this.node.style.left = `${this.x}px`;
     this.node.style.top = `${this.y}px`;
     const glow = this.scale;
-    this.node.style.filter = `drop-shadow(0 0 ${4 * glow}px #ffee00) drop-shadow(0 0 ${10 * glow}px rgba(255, 230, 0, 0.9)) drop-shadow(0 0 ${22 * glow}px rgba(255, 220, 0, 0.6)) drop-shadow(0 0 ${40 * glow}px rgba(255, 210, 0, 0.35))`;
+    this.node.style.filter = `drop-shadow(0 0 ${4 * glow}px #1df800) drop-shadow(0 0 ${10 * glow}px rgba(0, 248, 136, 0.9)) drop-shadow(0 0 ${22 * glow}px rgba(0, 248, 136, 0.6)) drop-shadow(0 0 ${40 * glow}px rgba(0, 248, 136, 0.35))`;
+  this.node.style.border = "0px solid #ffffff";
+  this.node.style.borderRadius = "100%"
   }
 
+
   automaticMovement() {
-    this.y += PICKUP_SPEED * this.scale;
+    this.y += PICKUP_SPEED * this.scale * difficulty;
     this.node.style.top = `${this.y}px`;
   }
 

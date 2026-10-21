@@ -20,12 +20,12 @@ this.y = gameAreaNode.clientHeight * 0.05;
   this.node.style.width = `${this.width}px`;
   this.node.style.height = `${this.height}px`;
   this.node.style.boxSizing = "border-box";
-  this.node.style.backgroundImage = 'url("./images/626fdd41-a620-41fe-8dfe-c1767b7efa42.png")';
+  this.node.style.backgroundImage = 'url("./images/41805bc3-a383-42b8-a8ea-83e9307c67e0.png")';
   this.node.style.backgroundSize = "contain";
   this.node.style.backgroundPosition = "center";
   this.node.style.backgroundRepeat = "no-repeat";
-  this.node.style.boxShadow = "0 0 6px 2px #ffffff, 0 0 16px 6px rgba(255, 255, 255, 0.9), 0 0 36px 14px rgba(255, 255, 255, 0.6), 0 0 70px 28px rgba(255, 255, 255, 0.35)";
-  this.node.style.border = "0px solid #ffffff";
+  this.node.style.boxShadow = "0 0 6px 2px #00f888, 0 0 16px 6px rgba(0, 248, 136, 0.9), 0 0 36px 14px rgba(0, 248, 136, 0.6), 0 0 70px 28px rgba(0, 248, 136, 0.35)";
+  this.node.style.border = "0px solid #060000";
   this.node.style.borderRadius = "100%"
   
   this.node.style.position = "absolute"
@@ -64,7 +64,7 @@ if (this.y < 0) {
   this.gravitySpeed = 0;
 }
 
-const maxY = Math.max(0, gameAreaNode.clientHeight - this.height);
+const maxY = Math.max(0, gameAreaNode.clientHeight * (1 - floorRise) - this.height);
 const touchedBottom = this.y >= maxY;
 if (touchedBottom) {
   this.y = maxY;
@@ -94,7 +94,7 @@ this.gravitySpeed *= scale / previousScale;
 this.node.style.width = `${this.width}px`;
 this.node.style.height = `${this.height}px`;
 this.node.style.borderWidth = "0px";
-this.node.style.boxShadow = `0 0 ${6 * scale}px ${2 * scale}px #ffffff, 0 0 ${16 * scale}px ${6 * scale}px rgba(255, 255, 255, 0.9), 0 0 ${36 * scale}px ${14 * scale}px rgba(255, 255, 255, 0.6), 0 0 ${70 * scale}px ${28 * scale}px rgba(255, 255, 255, 0.35)`;
+this.node.style.boxShadow = `0 0 ${6 * scale}px ${2 * scale}px #00f888, 0 0 ${16 * scale}px ${6 * scale}px rgba(0, 248, 136, 0.9), 0 0 ${36 * scale}px ${14 * scale}px rgba(0, 248, 136, 0.6), 0 0 ${70 * scale}px ${28 * scale}px rgba(0, 248, 136, 0.35)`;
 this.node.style.left = `${this.x}px`;
 this.node.style.top = `${this.y}px`;
 }
