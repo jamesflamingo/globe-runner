@@ -13,10 +13,11 @@ class Gate {
     this.layout(gapX, gapWidth);
   }
 
-  // Each platform starts at its frame edge; all share the same thickness, so the image stretches horizontally.
+  // put the two bars on each side of the gap
   layout(gapX, gapWidth) {
     const gameWidth = gameAreaNode.clientWidth;
-    const [leftBar, rightBar] = this.bars;
+    const leftBar = this.bars[0];
+    const rightBar = this.bars[1];
 
     this.placeBar(leftBar, 0, gapX);
     this.placeBar(rightBar, gapX + gapWidth, gameWidth - gapX - gapWidth);
@@ -55,25 +56,28 @@ class Gate {
     node.style.position = "absolute";
     gameAreaNode.append(node);
 
-    const gapFacingSide = side === "left" ? "right" : "left";
+    let gapFacingSide = "left";
+    if (side === "left") gapFacingSide = "right";
 
-    return { node, x: 0, width: 0, height: 0, y: this.y, gapFacingSide };
+    return { node: node, x: 0, width: 0, height: 0, y: this.y, gapFacingSide: gapFacingSide };
   }
 
   automaticMovement() {
     this.y += this.speed * difficulty;
-    this.bars.forEach((bar) => {
-      bar.y = this.y;
-      bar.node.style.top = `${bar.y}px`;
-    });
+    for (let i = 0; i < this.bars.length; i++) {
+      this.bars[i].y = this.y;
+      this.bars[i].node.style.top = `${this.bars[i].y}px`;
+    }
   }
 
   remove() {
-    this.bars.forEach((bar) => bar.node.remove());
+    for (let i = 0; i < this.bars.length; i++) {
+      this.bars[i].node.remove();
+    }
   }
 }
 
-// every SWEEPER_EVERY rows a single bar sweeps from side to side instead of a gate
+// a single bar that moves side to side instead of a gate
 class Sweeper {
   constructor() {
     this.scale = getGameScale();
@@ -124,9 +128,10 @@ class Sweeper {
   automaticMovement() {
     this.y += this.speed * difficulty;
     this.xRatio += this.direction * SWEEPER_SPEED_RATIO * difficulty;
+    // bounce when it reaches a side
     if (this.xRatio >= 1 || this.xRatio <= 0) {
       this.xRatio = Math.max(0, Math.min(1, this.xRatio));
-      this.direction *= -1;
+      this.direction = this.direction * -1;
     }
     this.layout();
   }

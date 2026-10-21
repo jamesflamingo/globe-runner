@@ -26,10 +26,8 @@ class Pickup {
     this.node.style.top = `${this.y}px`;
     const glow = this.scale;
     this.node.style.filter = `drop-shadow(0 0 ${4 * glow}px #1df800) drop-shadow(0 0 ${10 * glow}px rgba(0, 248, 136, 0.9)) drop-shadow(0 0 ${22 * glow}px rgba(0, 248, 136, 0.6)) drop-shadow(0 0 ${40 * glow}px rgba(0, 248, 136, 0.35))`;
-  this.node.style.border = "0px solid #ffffff";
-  this.node.style.borderRadius = "100%"
+    this.node.style.borderRadius = "100%";
   }
-
 
   automaticMovement() {
     this.y += PICKUP_SPEED * this.scale * difficulty;

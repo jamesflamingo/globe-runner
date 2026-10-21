@@ -26,11 +26,17 @@ class Laser {
     gameAreaNode.append(this.node);
   }
 
-  // starts visible at the top: LASER_ON_MS on, then LASER_OFF_MS off, repeating
+  // the laser stays on for a while, then off, and repeats
   updateState() {
     const cycle = LASER_OFF_MS + LASER_ON_MS;
-    this.active = (performance.now() - this.bornAt) % cycle < LASER_ON_MS;
-    this.node.style.display = this.active ? "block" : "none";
+    const timeInCycle = (performance.now() - this.bornAt) % cycle;
+    if (timeInCycle < LASER_ON_MS) {
+      this.active = true;
+      this.node.style.display = "block";
+    } else {
+      this.active = false;
+      this.node.style.display = "none";
+    }
   }
 
   automaticMovement() {

@@ -5,7 +5,7 @@ const TRAIL_DOT_SIZE = 6;
 class Player {
 
   constructor() {
-    //* all player properties will go here
+    // player properties
   
   this.node = document.createElement ("div")
   gameAreaNode.append (this.node)
@@ -45,9 +45,7 @@ this.resize();
 
 }
 
-  //* all player methods will go here
-
-  //MOVEMENTS CHANGES
+  // movements
 
 move(direction, deltaTime) {
 const maxX = gameAreaNode.clientWidth - this.width;
@@ -59,7 +57,7 @@ jump() {
 this.gravitySpeed = -256 * 0.9 * Math.SQRT1_2 * Math.sqrt(0.55) * this.scale;
 }
 
-// Returns true when the globe touches the bottom of the play area.
+// returns true if the globe touches the floor
 update(deltaTime) {
 this.gravitySpeed += this.gravity * deltaTime;
 this.y += this.gravitySpeed * deltaTime;
@@ -81,7 +79,7 @@ this.leaveTrail();
 return touchedBottom;
 }
 
-// drops a small dot at the globe's centre every few frames; it shrinks and fades out on its own
+// leaves a white dot behind the globe that fades out
 leaveTrail() {
 const now = performance.now();
 if (now - this.lastTrailAt < TRAIL_INTERVAL_MS) return;
