@@ -1,3 +1,7 @@
+const TRAIL_INTERVAL_MS = 45;
+const TRAIL_LIFE_MS = 600;
+const TRAIL_DOT_SIZE = 6;
+
 class Player {
 
   constructor() {
@@ -20,11 +24,11 @@ this.y = gameAreaNode.clientHeight * 0.05;
   this.node.style.width = `${this.width}px`;
   this.node.style.height = `${this.height}px`;
   this.node.style.boxSizing = "border-box";
-  this.node.style.backgroundImage = 'url("./images/41805bc3-a383-42b8-a8ea-83e9307c67e0.png")';
+  this.node.style.backgroundImage = 'url("./images/globe_sphere2.gif")';
   this.node.style.backgroundSize = "contain";
   this.node.style.backgroundPosition = "center";
   this.node.style.backgroundRepeat = "no-repeat";
-  this.node.style.boxShadow = "0 0 6px 2px #00f888, 0 0 16px 6px rgba(0, 248, 136, 0.9), 0 0 36px 14px rgba(0, 248, 136, 0.6), 0 0 70px 28px rgba(0, 248, 136, 0.35)";
+  this.node.style.boxShadow = "0 0 0 1px #ffffff, 0 0 6px 2px #00f888, 0 0 16px 6px rgba(0, 248, 136, 0.9), 0 0 36px 14px rgba(0, 248, 136, 0.6), 0 0 70px 28px rgba(0, 248, 136, 0.35)";
   this.node.style.border = "0px solid #060000";
   this.node.style.borderRadius = "100%"
   
@@ -35,6 +39,7 @@ this.y = gameAreaNode.clientHeight * 0.05;
 this.speed = 240;
 this.gravity = 256 * 0.85 * 0.9;
 this.gravitySpeed = 0;
+this.lastTrailAt = 0;
 
 this.resize();
 
@@ -51,7 +56,7 @@ this.node.style.left = `${this.x}px`
 }
 
 jump() {
-this.gravitySpeed = -256 * 0.9 * Math.SQRT1_2 * this.scale;
+this.gravitySpeed = -256 * 0.9 * Math.SQRT1_2 * Math.sqrt(0.55) * this.scale;
 }
 
 // Returns true when the globe touches the bottom of the play area.
@@ -72,7 +77,35 @@ if (touchedBottom) {
 }
 
 this.node.style.top = `${this.y}px`;
+this.leaveTrail();
 return touchedBottom;
+}
+
+// drops a small dot at the globe's centre every few frames; it shrinks and fades out on its own
+leaveTrail() {
+const now = performance.now();
+if (now - this.lastTrailAt < TRAIL_INTERVAL_MS) return;
+this.lastTrailAt = now;
+
+const size = TRAIL_DOT_SIZE * this.scale;
+const dot = document.createElement("div");
+dot.className = "trail-dot";
+dot.style.position = "absolute";
+dot.style.width = `${size}px`;
+dot.style.height = `${size}px`;
+dot.style.left = `${this.x + (this.width - size) / 2}px`;
+dot.style.top = `${this.y + (this.height - size) / 2}px`;
+dot.style.borderRadius = "50%";
+dot.style.background = "#ffffff";
+dot.style.boxShadow = `0 0 ${4 * this.scale}px #ffffff, 0 0 ${8 * this.scale}px rgba(255, 255, 255, 0.8)`;
+dot.style.transition = `opacity ${TRAIL_LIFE_MS}ms linear, transform ${TRAIL_LIFE_MS}ms linear`;
+gameAreaNode.append(dot);
+
+requestAnimationFrame(() => {
+  dot.style.opacity = "0";
+  dot.style.transform = "scale(0.2)";
+});
+setTimeout(() => dot.remove(), TRAIL_LIFE_MS);
 }
 
 resize() {
@@ -94,7 +127,7 @@ this.gravitySpeed *= scale / previousScale;
 this.node.style.width = `${this.width}px`;
 this.node.style.height = `${this.height}px`;
 this.node.style.borderWidth = "0px";
-this.node.style.boxShadow = `0 0 ${6 * scale}px ${2 * scale}px #00f888, 0 0 ${16 * scale}px ${6 * scale}px rgba(0, 248, 136, 0.9), 0 0 ${36 * scale}px ${14 * scale}px rgba(0, 248, 136, 0.6), 0 0 ${70 * scale}px ${28 * scale}px rgba(0, 248, 136, 0.35)`;
+this.node.style.boxShadow = `0 0 0 ${scale}px #ffffff, 0 0 ${6 * scale}px ${2 * scale}px #00f888, 0 0 ${16 * scale}px ${6 * scale}px rgba(0, 248, 136, 0.9), 0 0 ${36 * scale}px ${14 * scale}px rgba(0, 248, 136, 0.6), 0 0 ${70 * scale}px ${28 * scale}px rgba(0, 248, 136, 0.35)`;
 this.node.style.left = `${this.x}px`;
 this.node.style.top = `${this.y}px`;
 }

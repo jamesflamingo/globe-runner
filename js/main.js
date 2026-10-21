@@ -25,7 +25,17 @@ const FLOOR_RISE_STEP = 0.05;
 const FLOOR_RISE_EVERY_SECONDS = 30;
 const FLOOR_RISE_MAX = 0.7;
 let floorRise = 0;
-const MUSIC_START_SECONDS = 7;
+const START_SOUND_SKIP_SECONDS = 1;
+const GAME_OVER_SOUND_SECONDS = 5;
+const gameOverSound = new Audio("./audio/glitch.mp3");
+gameOverSound.addEventListener("timeupdate", () => {
+    if (gameOverSound.currentTime >= GAME_OVER_SOUND_SECONDS) gameOverSound.pause();
+});
+const startSound = new Audio("./audio/error.mp3");
+
+const MUSIC_START_SECONDS = 3;
+const MUSIC_DELAY_MS = 2000;
+let musicTimeoutId = null;
 const music = new Audio("./audio/redlining.mp3");
 music.volume = 0.5;
 music.addEventListener("loadedmetadata", () => {
@@ -37,16 +47,6 @@ music.addEventListener("ended", () => {
     music.play();
 });
 
-// browsers block autoplay, so if it fails the music starts on the first click or key press
-music.play().catch(() => {
-    const unlock = () => {
-        music.play();
-        document.removeEventListener("click", unlock);
-        document.removeEventListener("keydown", unlock);
-    };
-    document.addEventListener("click", unlock);
-    document.addEventListener("keydown", unlock);
-});
 const ENEMY_COLLISION_TOP_RATIO = 0.22;
 const ENEMY_COLLISION_HEIGHT_RATIO = 0.42;
 const ENEMY_GAP_EDGE_COLLISION_INSET = 12;
@@ -76,8 +76,13 @@ function gameStart() {
     startScreenNode.style.display = "none";
     gameScreenNode.style.display = "flex";
 
-    music.currentTime = MUSIC_START_SECONDS;
-    music.play();
+    clearTimeout(musicTimeoutId);
+    musicTimeoutId = setTimeout(() => {
+        music.currentTime = MUSIC_START_SECONDS;
+        music.play();
+    }, MUSIC_DELAY_MS);
+    startSound.currentTime = START_SOUND_SKIP_SECONDS;
+    startSound.play();
 
     addPlayer();
     enemyRowCount = 0;
@@ -338,6 +343,7 @@ function checkCollisionPlayerEnemy() {
 }
 
 function restartGame() {
+    gameOverSound.pause();
     enemiesArr.forEach((enemy) => enemy.remove());
     enemiesArr = [];
     clearPickups();
@@ -347,7 +353,10 @@ function restartGame() {
 }
 
 function gameOver() {
+    clearTimeout(musicTimeoutId);
     music.pause();
+    gameOverSound.currentTime = 0;
+    gameOverSound.play();
     elapsedTime = (performance.now() - gameStartedAt) / 1000;
     timerNode.textContent = elapsedTime.toFixed(1);
     finalTimeNode.textContent = elapsedTime.toFixed(1);
@@ -366,11 +375,27 @@ function gameOver() {
 }
 
 //* EVENT LISTENERS
-startBtnNode.addEventListener("click", gameStart);
-optionsBtnNode.addEventListener("click", () => {
-    window.location.href = "./options.html";
+const buttonSound = new Audio("./audio/button.mp3");
+function playButtonSound() {
+    buttonSound.currentTime = 0;
+    buttonSound.play();
+}
+
+startBtnNode.addEventListener("click", () => {
+    playButtonSound();
+    gameStart();
 });
-restartBtnNode.addEventListener("click", restartGame);
+optionsBtnNode.addEventListener("click", () => {
+    playButtonSound();
+    // gives the click sound time to play before the page changes
+    setTimeout(() => {
+        window.location.href = "./options.html";
+    }, 150);
+});
+restartBtnNode.addEventListener("click", () => {
+    playButtonSound();
+    restartGame();
+});
 
 window.addEventListener("resize", () => {
     if (mainIntervalId === null) return;
