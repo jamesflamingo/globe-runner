@@ -37,12 +37,12 @@ const ENEMY_COLLISION_HEIGHT_RATIO = 0.42;
 const ENEMY_GAP_EDGE_COLLISION_INSET = 12;
 
 // ---------- SOUNDS ----------
-const MUSIC_START_SECONDS = 3;
+const MUSIC_START_SECONDS = 0;
 const MUSIC_DELAY_MS = 2000;
 const START_SOUND_SKIP_SECONDS = 1;
 const GAME_OVER_SOUND_SECONDS = 5;
 
-const music = new Audio("./audio/redlining.mp3");
+const music = new Audio("./audio/02- Low Babel  The Silent Conductor  Cyberpunk Music  Darksynth Industrial Synthwave - DataStreamBeats (1).mp3");
 music.volume = 0.5;
 const startSound = new Audio("./audio/error.mp3");
 const gameOverSound = new Audio("./audio/glitch.mp3");
@@ -122,7 +122,7 @@ function gameStart() {
     addEnemy(true);
 
     gameStartedAt = performance.now();
-    previousFrameTime = performance.now();
+    previousFrameTime = gameStartedAt;
     elapsedTime = 0;
     difficulty = 1;
     gameScore = 0;
@@ -156,6 +156,12 @@ function addLaser() {
     lasersArr.push(new Laser());
 }
 
+function moveObjects(objects) {
+    objects.forEach(function (object) {
+        object.automaticMovement();
+    });
+}
+
 function setFloorRise(value) {
     floorRise = value;
     gameAreaNode.style.setProperty("--floor-rise", value * 100 + "%");
@@ -172,8 +178,10 @@ function gameLoop() {
     difficulty = DIFFICULTY_STEP ** Math.floor(elapsedTime / DIFFICULTY_EVERY_SECONDS);
 
     // the red line rises slowly up to its target
-    let targetRise = Math.floor(elapsedTime / FLOOR_RISE_EVERY_SECONDS) * FLOOR_RISE_STEP;
-    if (targetRise > FLOOR_RISE_MAX) targetRise = FLOOR_RISE_MAX;
+    const targetRise = Math.min(
+        Math.floor(elapsedTime / FLOOR_RISE_EVERY_SECONDS) * FLOOR_RISE_STEP,
+        FLOOR_RISE_MAX
+    );
     setFloorRise(floorRise + (targetRise - floorRise) * Math.min(1, deltaTime * 3));
 
     // player movement
@@ -190,15 +198,9 @@ function gameLoop() {
         return;
     }
 
-    for (let i = 0; i < enemiesArr.length; i++) {
-        enemiesArr[i].automaticMovement();
-    }
-    for (let i = 0; i < pickupsArr.length; i++) {
-        pickupsArr[i].automaticMovement();
-    }
-    for (let i = 0; i < lasersArr.length; i++) {
-        lasersArr[i].automaticMovement();
-    }
+    moveObjects(enemiesArr);
+    moveObjects(pickupsArr);
+    moveObjects(lasersArr);
 
     removeEnemiesOutside();
     if (checkLasers()) return;
@@ -354,18 +356,18 @@ function checkEnemies() {
 }
 
 function clearEnemies() {
-    for (let i = 0; i < enemiesArr.length; i++) {
-        enemiesArr[i].remove();
-    }
+    enemiesArr.forEach(function (enemy) {
+        enemy.remove();
+    });
     enemiesArr = [];
 }
 
 function clearPickups() {
     clearTimeout(pickupTimeoutId);
     pickupTimeoutId = null;
-    for (let i = 0; i < pickupsArr.length; i++) {
-        pickupsArr[i].remove();
-    }
+    pickupsArr.forEach(function (pickup) {
+        pickup.remove();
+    });
     pickupsArr = [];
 }
 
@@ -374,9 +376,9 @@ function clearLasers() {
     clearInterval(laserIntervalId);
     laserTimeoutId = null;
     laserIntervalId = null;
-    for (let i = 0; i < lasersArr.length; i++) {
-        lasersArr[i].remove();
-    }
+    lasersArr.forEach(function (laser) {
+        laser.remove();
+    });
     lasersArr = [];
 }
 
@@ -443,12 +445,12 @@ window.addEventListener("resize", function () {
     if (mainIntervalId === null) return;
 
     const gapWidth = getGameGapWidth();
-    for (let i = 0; i < enemiesArr.length; i++) {
-        enemiesArr[i].resize(gapWidth);
-    }
-    for (let i = 0; i < pickupsArr.length; i++) {
-        pickupsArr[i].resize();
-    }
+    enemiesArr.forEach(function (enemy) {
+        enemy.resize(gapWidth);
+    });
+    pickupsArr.forEach(function (pickup) {
+        pickup.resize();
+    });
     if (playerObj) {
         playerObj.resize();
     }
