@@ -1,3 +1,4 @@
+/* Font and general styles */
 @font-face {
   font-family: "Press Start 2P";
   src: url("../fonts/PressStart2P.ttf") format("truetype");
@@ -27,6 +28,7 @@ button:hover {
   background-color: #0d7531;
 }
 
+/* Instructions screen */
 #options-page {
   position: fixed;
   inset: 0;
@@ -79,6 +81,7 @@ button:hover {
   background-color: #0d7531;
 }
 
+/* Shared screen container */
 .container {
   display: flex;
   flex-direction: column;
@@ -88,6 +91,7 @@ button:hover {
   padding: 20px;
 }
 
+/* Start screen and its buttons */
 #start-screen {
   position: fixed;
   inset: 0;
@@ -163,6 +167,7 @@ button:hover {
   background-color: rgba(0, 117, 49, 0.7);
 }
 
+/* Game area and interface elements */
 #game-viewport {
   position: absolute;
   inset: 0;
@@ -216,6 +221,7 @@ button:hover {
   left: 9.94%;
 }
 
+/* Game frame and area where the player and enemies move */
 #game-box {
   background-color: #000000;
   background-image: url("../images/354dc84f-f7f5-404c-a75c-e9730b5318e4.png");
@@ -268,10 +274,12 @@ button:hover {
   pointer-events: none; /* prevents elements in the game-box to be dragged. This improves the user experience for click events on the game-box  */
 }
 
+/* Hide game screens until they are needed */
 #game-screen, #game-over-screen{
   display: none;
 }
 
+/* Game over screen and results */
 #game-over-screen {
   position: fixed;
   inset: 0;

@@ -20,7 +20,7 @@ A browser game where you move the globe left and right through gaps in pairs of 
 
 - `main.js` — starts the game, runs the game loop, and scales barrier openings and collisions to the play area's width.
 - `player.js` — creates a globe that scales to the play area's width, moves it left and right, and lets it jump with Space while staying within the visible frame; touching the bottom of the play area ends the game.
-- `globe.js` — defines pairs of falling platforms. Every platform has the same thickness and uses the full, uncropped enemy image (stretched horizontally to its length), the same image on both sides, starting at its frame edge and ending at the opening, so nothing extends outside the play area; platforms scale to the play area's width and fall proportionally to their size.
+- `enemies.js` — defines falling gate barriers and the side-to-side sweeper enemy.
 - `pickup.js` — collectible object (`images/descarga (1).png`) that falls between enemy rows; touching it removes it and adds 10 points to the score.
 
 ### `styles/`
